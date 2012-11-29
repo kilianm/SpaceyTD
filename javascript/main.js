@@ -11,7 +11,6 @@ var Enemy = function(playSurface) {
     this.speed = 80; // pixels per second?
 
     this.originalImage = gamejs.image.load("images/enemy.png");
-    var dims = this.originalImage.getSize();
 
     // determine target location
     this.rotation = 0;
@@ -22,7 +21,10 @@ var Enemy = function(playSurface) {
     this.path_index = 1; // start moving
     this.path_target = this.path[this.path_index];
 
-    this.rect = new gamejs.Rect(this.path[0], dims);
+    var dims = this.originalImage.getSize();
+    var start_x = this.path[0][0] - dims[0] / 2;
+    var start_y = this.path[0][1] - dims[1] / 2;
+    this.rect = new gamejs.Rect([start_x, start_y], dims);
     return this;
  };
  // inherit (actually: set prototype)
