@@ -25,6 +25,8 @@ var LaserTower = exports.LaserTower = function(playSurface, location) {
   // inherit (actually: set prototype)
   gamejs.utils.objects.extend(LaserTower, gamejs.sprite.Sprite);
   LaserTower.prototype.update = function(msDuration, gEnemies) {
+      this.rotationSpeed = 50;
+
       var self = this;
       var enemiesInRange = {};
       var enemyDistances = [];
@@ -50,6 +52,24 @@ var LaserTower = exports.LaserTower = function(playSurface, location) {
           self.image = gamejs.transform.rotate(self.originalImage, self.rotation);
       } else {
           self.currentTargetEnemy = null;
+
+          // some anymation to turn the turrents ('look for targest') when
+          // turret is idle
+          if (self.target_rotation == null) {
+              self.target_rotation = Math.random() * 180;
+              if (Math.random() > 0.5) {
+                  self.target_rotation_direction = 1;
+              } else {
+                  self.target_rotation += 180;
+                  self.target_rotation_direction = -1;
+              }
+          }
+          self.rotation += (msDuration/1000) * self.rotationSpeed * self.target_rotation_direction;
+          if (Math.abs(self.rotation) > 300) {
+              self.target_rotation = Math.random() * 180;
+              self.target_rotation_direction *= -1;
+          }
+          self.image = gamejs.transform.rotate(self.originalImage, self.rotation);
       }
   };
   LaserTower.prototype.draw = function(surface) {
