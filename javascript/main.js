@@ -9,6 +9,7 @@ var Enemy = function(playSurface) {
     Enemy.superConstructor.apply(this, arguments);
 
     this.speed = 80; // pixels per second?
+    this.destination_reached = false;
 
     this.originalImage = gamejs.image.load("images/enemy.png");
 
@@ -19,7 +20,9 @@ var Enemy = function(playSurface) {
     // determine start location
     this.path = playSurface.path;
     this.path_index = 1; // start moving
-    this.path_target = this.path[this.path_index];
+    this.path_target = function() {
+        return this.path[this.path_index];
+    };
 
     var dims = this.originalImage.getSize();
     var start_x = this.path[0][0] - dims[0] / 2;
@@ -30,41 +33,54 @@ var Enemy = function(playSurface) {
  // inherit (actually: set prototype)
  gamejs.utils.objects.extend(Enemy, gamejs.sprite.Sprite);
  Enemy.prototype.update = function(msDuration) {
-     if (this.rect.collidePoint(this.path_target)) {
-         console.log(this.rect.collidePoint(this.path_target));
-         //console.log(this.rect.left);
-         this.path_index++;
+     if (this.destination_reached) {
+         return;
      }
-     //this.rect.moveIp(this.speed * (msDuration/1000), 0);
-    // - check if current position collides with target position
-    // - if so, determine if we need to move to X or Y, and change
-    // direction accordingly
-    // - change rotation so to point to correct target coordinates
+     var x = 0;
+     var y = 1;
+     var target = this.path_target();
+     var current = this.rect.center;
 
+     var pixel_speed = this.speed * (msDuration/1000);
+     var moved = false;
 
+     if (target[x] > current[x]) {
+         this.rect.moveIp(pixel_speed, 0);
+         moved = true;
+     }
+     if (target[x] < current[x]) {
+         this.rect.moveIp(-pixel_speed, 0);
+         moved = true;
+     }
+     if (target[y] > current[y]) {
+         this.rect.moveIp(0, pixel_speed);
+         moved = true;
+     }
+//     if (target[y] < current[y]) {
+//         this.rect.moveIp(0, -pixel_speed);
+//         moved = true;
+//     }
 
-//     if (target.x > current.x) {
-//         this.rect.moveIp(this.speed * (msDuration/1000), 0);
-//     }
-//     if (target.x < current.x) {
-//         this.rect.moveIp(-this.speed * (msDuration/1000), 0);
-//     }
-//     if (target.y > current.y) {
-//         this.rect.moveIp(0, this.speed * (msDuration/1000));
-//     }
-//     if (target.y > current.y) {
-//         this.rect.moveIp(0, -this.speed * (msDuration/1000));
-//     }
+     if (!moved) {
+         this.path_index++;
+         var new_target = this.path_target();
 
-    // moveIp = move in place
-    this.rect.moveIp(this.speed * (msDuration/1000), 0);
-    if (this.rect.right > 800) {
-       this.speed *= -1;
-       this.image = gamejs.transform.rotate(this.originalImage, this.rotation + 180);
-    } else if (this.rect.right < 0 ) {
-       this.speed *= -1;
-       this.image = gamejs.transform.rotate(this.originalImage, this.rotation);
-    }
+         // rotate
+         if (new_target[x] > target[x]) {
+             this.rotation = 0;
+         }
+         if (new_target[x] < target[x]) {
+             this.rotation = -180;
+         }
+         if (new_target[y] > target[y]) {
+             this.rotation = 90;
+         }
+         this.image = gamejs.transform.rotate(this.originalImage, this.rotation);
+
+         if (this.path.length == this.path_index) {
+             this.destination_reached = true;
+         }
+     }
  };
 
 
