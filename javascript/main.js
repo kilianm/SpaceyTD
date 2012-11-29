@@ -13,6 +13,7 @@ var Enemy = function(playSurface) {
 
     this.speed = 100; // pixels per second?
     this.destination_reached = false;
+    this.distance_traveled = 0;
 
     this.originalImage = gamejs.image.load("images/enemy.png");
     var dims = this.originalImage.getSize();
@@ -35,7 +36,7 @@ var Enemy = function(playSurface) {
         if (this.health <= 0) {
             this.kill();
         }
-    }
+    };
 
     return this;
  };
@@ -51,30 +52,38 @@ var Enemy = function(playSurface) {
      var current = this.rect.center;
 
      var pixel_speed = this.speed * (msDuration/1000);
+     var distance = 0;
      var moved = false;
 
      if (target[x] > current[x]) {
          // move to right
+
          // Math.min is used to never exceed the target location and start
          // bouncing back and forth in corners.
-         this.rect.moveIp(Math.min(pixel_speed, target[x] - current[x]), 0);
+         distance = Math.min(pixel_speed, target[x] - current[x]);
+         this.rect.moveIp(distance, 0);
          moved = true;
      }
      if (target[x] < current[x]) {
          // move to left
-         this.rect.moveIp(-Math.min(pixel_speed, current[x] - target[x]), 0);
+         distance = -Math.min(pixel_speed, current[x] - target[x]);
+         this.rect.moveIp(distance, 0);
          moved = true;
      }
      if (target[y] > current[y]) {
          // move to bottom
-         this.rect.moveIp(0, Math.min(pixel_speed, target[y] - current[y]));
+         distance = Math.min(pixel_speed, target[y] - current[y]);
+         this.rect.moveIp(0, distance);
          moved = true;
      }
      if (target[y] < current[y]) {
          // move to top (not used yet in path)
-         this.rect.moveIp(0, -Math.min(pixel_speed, current[y] - target[y]));
+         distance = -Math.min(pixel_speed, current[y] - target[y]);
+         this.rect.moveIp(0, distance);
          moved = true;
      }
+
+     this.distance_traveled += Math.abs(distance);
 
      if (!moved) {
          // if we didn't move, it means we reached the target destination
