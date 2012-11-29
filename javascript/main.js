@@ -51,6 +51,8 @@ function main() {
         tower5.draw(mainSurface);
         tower6.update(msDuration, gEnemies, mainSurface);
         tower6.draw(mainSurface);
+
+        playSurface.handleMainEvents();
     };
     gamejs.time.fpsCallback(tick, this, 60);
  }

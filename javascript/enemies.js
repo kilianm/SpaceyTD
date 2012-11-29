@@ -4,9 +4,10 @@ var Enemy = exports.Enemy = function(playSurface) {
     // call superconstructor
     Enemy.superConstructor.apply(this, arguments);
 
-    this.health = 1200;
-
+    this.reward = 10;
     this.speed = 100; // pixels per second?
+
+    this.health = 1800;
     this.destination_reached = false;
     this.distance_traveled = 0;
 
@@ -29,6 +30,10 @@ var Enemy = exports.Enemy = function(playSurface) {
     this.doDamage = function(damage) {
         this.health -= damage;
         if (this.health <= 0) {
+            gamejs.event.post({
+                type: gamejs.event.USEREVENT,
+                data: {'type': 'enemy-killed', 'reward': this.reward}
+             });
             this.kill();
         }
     };
@@ -86,7 +91,11 @@ var Enemy = exports.Enemy = function(playSurface) {
          // so we set new path destination for next tick.
          this.path_index++;
          if (this.path.length == this.path_index) {
-             this.destination_reached = true;
+             gamejs.event.post({
+                 type: gamejs.event.USEREVENT,
+                 data: {'type': 'enemy-escaped'}
+              });
+             this.kill();
              return;
          }
 
