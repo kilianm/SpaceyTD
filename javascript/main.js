@@ -114,9 +114,12 @@ var Enemy = function(playSurface) {
      this.image = gamejs.transform.rotate(this.originalImage, this.rotation);
 
      this.shootRange = 150;
+     this.shootDamage = 3;
      this.shootDuration = 10;
      this.shootCooldown = 10;
      this.shootCooldown = 10;
+
+     this.currentTargetEnemy = null;
 
      this.rect = new gamejs.Rect(location, dims);
      return this;
@@ -130,7 +133,6 @@ var Enemy = function(playSurface) {
       gEnemies.forEach(function(enemy){
           distance = $v.distance(self.rect.center, enemy.rect.center);
           if (distance < self.shootRange) {
-              enemy.doDamage(0.8);
               enemiesInRange[distance] = enemy;
               enemyDistances.push(distance);
           }
@@ -139,6 +141,8 @@ var Enemy = function(playSurface) {
           enemyDistances.sort();
           var distance = enemyDistances[0];
           enemy = enemiesInRange[distance];
+          enemy.doDamage(self.shootDamage);
+          self.currentTargetEnemy = enemy;
           var dx = enemy.rect.center[0] - self.rect.center[0];
           var dy = enemy.rect.center[1] - self.rect.center[1];
           var theta = Math.atan2(dy, dx);
@@ -147,10 +151,15 @@ var Enemy = function(playSurface) {
           self.image = gamejs.transform.rotate(self.originalImage, self.rotation);
           console.log(enemy);
           console.log('Nearby! '+distance);
+      } else {
+          self.currentTargetEnemy = null;
       }
   };
   Tower.prototype.draw = function(surface) {
       surface.blit(this.image, this.rect);
+      if (this.currentTargetEnemy != null) {
+          draw.line(surface, '#FF0000', this.rect.center, this.currentTargetEnemy.rect.center);
+      }
       return;
 
   };
