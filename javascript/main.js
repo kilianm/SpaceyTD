@@ -162,7 +162,7 @@ function main() {
 
     // game loop
     var mainSurface = gamejs.display.getSurface();
-    var playSurface = new playsurface.PlaySurface([800, 600], [[0,30], [300,30], [300,100], [600,100], [600,300], [200,300], [200,400], [400,400], [400,600]]);
+    var playSurface = new playsurface.PlaySurface([800, 600], [[0,30], [300,30], [300,100], [600,100], [600,300], [400,300], [400,250], [200,250], [200,500], [500, 500], [500, 600]]);
 
     var gEnemies= new gamejs.sprite.Group();
     for (var i=0;i<5;i++) {
