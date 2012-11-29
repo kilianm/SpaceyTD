@@ -130,7 +130,7 @@ function main() {
 
     var tower1 = new towers.LaserTower(playSurface, [200, 50]);
     var tower2 = new towers.BurningTower(playSurface, [250, 50]);
-    var tower3 = new towers.BurningTower(playSurface, [250, 100]);
+    var tower3 = new towers.LaserTower(playSurface, [250, 100]);
     var tower4 = new towers.LaserTower(playSurface, [250, 150]);
     var tower5 = new towers.LaserTower(playSurface, [300, 150]);
     var tower6 = new towers.LaserTower(playSurface, [350, 150]);

@@ -29,16 +29,17 @@ var LaserTower = exports.LaserTower = function(playSurface, location) {
       var enemiesInRange = {};
       var enemyDistances = [];
       gEnemies.forEach(function(enemy){
-          distance = $v.distance(self.rect.center, enemy.rect.center);
+          var distance = $v.distance(self.rect.center, enemy.rect.center);
           if (distance < self.shootRange) {
-              enemiesInRange[distance] = enemy;
-              enemyDistances.push(distance);
+              enemiesInRange[enemy.distance_traveled] = enemy;
+              enemyDistances.push(enemy.distance_traveled);
           }
       });
       if (enemyDistances.length > 0) {
-          enemyDistances.sort();
-          var distance = enemyDistances[0];
-          enemy = enemiesInRange[distance];
+          enemyDistances.sort(function(a, b){
+              return a - b;
+          });
+          enemy = enemiesInRange[enemyDistances.pop()];
           enemy.doDamage(self.shootDamage);
           self.currentTargetEnemy = enemy;
           var dx = enemy.rect.center[0] - self.rect.center[0];
@@ -47,8 +48,6 @@ var LaserTower = exports.LaserTower = function(playSurface, location) {
           var degrees = theta * 180/Math.PI; // rads to degs
           self.rotation = degrees;
           self.image = gamejs.transform.rotate(self.originalImage, self.rotation);
-          console.log(enemy);
-          console.log('Nearby! '+distance);
       } else {
           self.currentTargetEnemy = null;
       }
