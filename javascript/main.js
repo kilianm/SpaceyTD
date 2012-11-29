@@ -1,9 +1,9 @@
 
 
-var playsurface = require('./playsurface');
 var gamejs = require('gamejs');
 var draw = require('gamejs/draw');
-var $v = require('gamejs/utils/vectors');
+var playsurface = require('./playsurface');
+var towers = require('./towers');
 
 var Enemy = function(playSurface) {
     // call superconstructor
@@ -112,67 +112,6 @@ var Enemy = function(playSurface) {
      }
  };
 
- var Tower = function(playSurface, location) {
-     Tower.superConstructor.apply(this, arguments);
-
-     this.originalImage = gamejs.image.load("images/enemy.png");
-     var dims = this.originalImage.getSize();
-
-     // determine target location
-     this.rotation = 0;
-     this.image = gamejs.transform.rotate(this.originalImage, this.rotation);
-
-     this.shootRange = 150;
-     this.shootDamage = 3;
-     this.shootDuration = 10;
-     this.shootCooldown = 10;
-     this.shootCooldown = 10;
-
-     this.currentTargetEnemy = null;
-
-     this.rect = new gamejs.Rect(location, dims);
-     return this;
-  };
-  // inherit (actually: set prototype)
-  gamejs.utils.objects.extend(Tower, gamejs.sprite.Sprite);
-  Tower.prototype.update = function(msDuration, gEnemies) {
-      var self = this;
-      var enemiesInRange = {};
-      var enemyDistances = [];
-      gEnemies.forEach(function(enemy){
-          distance = $v.distance(self.rect.center, enemy.rect.center);
-          if (distance < self.shootRange) {
-              enemiesInRange[distance] = enemy;
-              enemyDistances.push(distance);
-          }
-      });
-      if (enemyDistances.length > 0) {
-          enemyDistances.sort();
-          var distance = enemyDistances[0];
-          enemy = enemiesInRange[distance];
-          enemy.doDamage(self.shootDamage);
-          self.currentTargetEnemy = enemy;
-          var dx = enemy.rect.center[0] - self.rect.center[0];
-          var dy = enemy.rect.center[1] - self.rect.center[1];
-          var theta = Math.atan2(dy, dx);
-          var degrees = theta * 180/Math.PI; // rads to degs
-          self.rotation = degrees;
-          self.image = gamejs.transform.rotate(self.originalImage, self.rotation);
-          console.log(enemy);
-          console.log('Nearby! '+distance);
-      } else {
-          self.currentTargetEnemy = null;
-      }
-  };
-  Tower.prototype.draw = function(surface) {
-      surface.blit(this.image, this.rect);
-      if (this.currentTargetEnemy != null) {
-          draw.line(surface, '#FF0000', this.rect.center, this.currentTargetEnemy.rect.center);
-      }
-      return;
-
-  };
-
 function main() {
     // screen setup
     gamejs.display.setMode([800, 600]);
@@ -189,12 +128,12 @@ function main() {
         }, i * 500);
     }
 
-    var tower1 = new Tower(playSurface, [200, 50]);
-    var tower2 = new Tower(playSurface, [250, 50]);
-    var tower3 = new Tower(playSurface, [250, 100]);
-    var tower4 = new Tower(playSurface, [250, 150]);
-    var tower5 = new Tower(playSurface, [300, 150]);
-    var tower6 = new Tower(playSurface, [350, 150]);
+    var tower1 = new towers.LaserTower(playSurface, [200, 50]);
+    var tower2 = new towers.BurningTower(playSurface, [250, 50]);
+    var tower3 = new towers.BurningTower(playSurface, [250, 100]);
+    var tower4 = new towers.LaserTower(playSurface, [250, 150]);
+    var tower5 = new towers.LaserTower(playSurface, [300, 150]);
+    var tower6 = new towers.LaserTower(playSurface, [350, 150]);
 
     // msDuration = time since last tick() call
     var tick = function(msDuration) {
