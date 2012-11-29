@@ -6,9 +6,10 @@ var draw = require('gamejs/draw');
 var $v = require('gamejs/utils/vectors');
 
 var Enemy = function(playSurface) {
-    console.log(playSurface);
     // call superconstructor
     Enemy.superConstructor.apply(this, arguments);
+
+    this.health = 500;
 
     this.speed = 100; // pixels per second?
     this.destination_reached = false;
@@ -28,6 +29,14 @@ var Enemy = function(playSurface) {
     };
 
     this.rect = new gamejs.Rect(this.path[0], dims);
+
+    this.doDamage = function(damage) {
+        this.health -= damage;
+        if (this.health <= 0) {
+            this.kill();
+        }
+    }
+
     return this;
  };
  // inherit (actually: set prototype)
@@ -121,6 +130,7 @@ var Enemy = function(playSurface) {
       gEnemies.forEach(function(enemy){
           distance = $v.distance(self.rect.center, enemy.rect.center);
           if (distance < self.shootRange) {
+              enemy.doDamage(0.8);
               enemiesInRange[distance] = enemy;
               enemyDistances.push(distance);
           }
@@ -160,7 +170,6 @@ function main() {
             gEnemies.add(new Enemy(playSurface));
         }, i * 500);
     }
-    console.log(gEnemies);
 
     var tower1 = new Tower(playSurface, [200, 50]);
     var tower2 = new Tower(playSurface, [250, 50]);
