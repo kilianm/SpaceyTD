@@ -63,9 +63,12 @@ var Enemy = function(playSurface) {
 
      if (!moved) {
          this.path_index++;
-         var new_target = this.path_target();
+         if (this.path.length == this.path_index) {
+             this.destination_reached = true;
+         }
 
          // rotate
+         var new_target = this.path_target();
          if (new_target[x] > target[x]) {
              this.rotation = 0;
          }
@@ -77,9 +80,6 @@ var Enemy = function(playSurface) {
          }
          this.image = gamejs.transform.rotate(this.originalImage, this.rotation);
 
-         if (this.path.length == this.path_index) {
-             this.destination_reached = true;
-         }
      }
  };
 
