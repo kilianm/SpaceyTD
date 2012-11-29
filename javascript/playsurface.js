@@ -6,7 +6,7 @@ var PlaySurface = exports.PlaySurface = function(rectSize,path) {
     this.path = path;
 
     this.draw = function(mainSurface) {
-        draw.lines(mainSurface, "#FFAAEE", false, this.path, 4);
+        draw.lines(mainSurface, "#FFAAEE", false, this.path);
     };
 
     return this;

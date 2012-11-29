@@ -2,6 +2,8 @@
 
 var playsurface = require('./playsurface');
 var gamejs = require('gamejs');
+var draw = require('gamejs/draw');
+var $v = require('gamejs/utils/vectors');
 
 var Enemy = function(playSurface) {
     console.log(playSurface);
@@ -12,6 +14,7 @@ var Enemy = function(playSurface) {
     this.destination_reached = false;
 
     this.originalImage = gamejs.image.load("images/enemy.png");
+    var dims = this.originalImage.getSize();
 
     // determine target location
     this.rotation = 0;
@@ -24,10 +27,7 @@ var Enemy = function(playSurface) {
         return this.path[this.path_index];
     };
 
-    var dims = this.originalImage.getSize();
-    var start_x = this.path[0][0] - dims[0] / 2;
-    var start_y = this.path[0][1] - dims[1] / 2;
-    this.rect = new gamejs.Rect([start_x, start_y], dims);
+    this.rect = new gamejs.Rect(this.path[0], dims);
     return this;
  };
  // inherit (actually: set prototype)
@@ -92,6 +92,40 @@ var Enemy = function(playSurface) {
      }
  };
 
+ var Tower = function(playSurface, location) {
+     Tower.superConstructor.apply(this, arguments);
+
+     this.originalImage = gamejs.image.load("images/enemy.png");
+     var dims = this.originalImage.getSize();
+
+     // determine target location
+     this.rotation = 0;
+     this.image = gamejs.transform.rotate(this.originalImage, this.rotation);
+
+     this.shootRange = 120;
+     this.rect = new gamejs.Rect(location, dims);
+     return this;
+  };
+  // inherit (actually: set prototype)
+  gamejs.utils.objects.extend(Tower, gamejs.sprite.Sprite);
+  Tower.prototype.update = function(msDuration, gEnemies, mainSurface) {
+      var self = this;
+      gEnemies.forEach(function(enemy){
+          distance = $v.distance(self.rect.center, enemy.rect.center);
+          if (distance < self.shootRange) {
+              //var unitPos =
+              console.log('Nearby! '+distance);
+              var dx = enemy.rect.center[0] - self.rect.center[0];
+              var dy = enemy.rect.center[1] - self.rect.center[1];
+              var theta = Math.atan2(dy, dx);
+              var degrees = theta * 180/Math.PI; // rads to degs
+              self.rotation = degrees;
+              self.image = gamejs.transform.rotate(self.originalImage, self.rotation);
+              //draw.circle(mainSurface, "#BBBBBB", self.rect.center, degrees);
+          }
+      });
+  };
+
 
 function main() {
     // screen setup
@@ -100,12 +134,15 @@ function main() {
 
     // game loop
     var mainSurface = gamejs.display.getSurface();
-    var playSurface = new playsurface.PlaySurface([800, 600], [[0,10], [300,10], [300,100], [600,100], [600,300], [200,300], [200,400], [400,400], [400,600]]);
+    var playSurface = new playsurface.PlaySurface([800, 600], [[0,30], [300,30], [300,100], [600,100], [600,300], [200,300], [200,400], [400,400], [400,600]]);
 
     var gEnemies= new gamejs.sprite.Group();
     for (var i=0;i<1;i++) {
         gEnemies.add(new Enemy(playSurface));
     }
+    console.log(gEnemies);
+
+    var tower = new Tower(playSurface, [250, 50]);
 
     // msDuration = time since last tick() call
     var tick = function(msDuration) {
@@ -114,10 +151,13 @@ function main() {
 
         gEnemies.update(msDuration);
         gEnemies.draw(mainSurface);
+
+        tower.update(msDuration, gEnemies, mainSurface);
+        tower.draw(mainSurface);
     };
     gamejs.time.fpsCallback(tick, this, 60);
  }
 
-gamejs.preload(['images/enemy.png']);
+gamejs.preload(['images/enemy.png', 'images/enemy-1.png']);
 
 gamejs.ready(main);
