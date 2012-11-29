@@ -56,15 +56,18 @@ var Enemy = function(playSurface) {
          this.rect.moveIp(0, pixel_speed);
          moved = true;
      }
-//     if (target[y] < current[y]) {
-//         this.rect.moveIp(0, -pixel_speed);
-//         moved = true;
-//     }
+     if (target[y] < current[y]) {
+         this.rect.moveIp(0, -pixel_speed);
+         moved = true;
+     }
 
      if (!moved) {
+         // if we didn't move, it means we reached the target destination
+         // so we set new path destination for next tick.
          this.path_index++;
          if (this.path.length == this.path_index) {
              this.destination_reached = true;
+             return;
          }
 
          // rotate
@@ -78,8 +81,10 @@ var Enemy = function(playSurface) {
          if (new_target[y] > target[y]) {
              this.rotation = 90;
          }
+         if (new_target[y] < target[y]) {
+             this.rotation = -90;
+         }
          this.image = gamejs.transform.rotate(this.originalImage, this.rotation);
-
      }
  };
 
