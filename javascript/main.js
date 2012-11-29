@@ -8,7 +8,7 @@ var Enemy = function(playSurface) {
     // call superconstructor
     Enemy.superConstructor.apply(this, arguments);
 
-    this.speed = 80; // pixels per second?
+    this.speed = 100; // pixels per second?
     this.destination_reached = false;
 
     this.originalImage = gamejs.image.load("images/enemy.png");
@@ -45,19 +45,23 @@ var Enemy = function(playSurface) {
      var moved = false;
 
      if (target[x] > current[x]) {
-         this.rect.moveIp(pixel_speed, 0);
+         // move to right
+         this.rect.moveIp(Math.min(pixel_speed, target[x] - current[x]), 0);
          moved = true;
      }
      if (target[x] < current[x]) {
-         this.rect.moveIp(-pixel_speed, 0);
+         // move to left
+         this.rect.moveIp(-Math.min(pixel_speed, current[x] - target[x]), 0);
          moved = true;
      }
      if (target[y] > current[y]) {
-         this.rect.moveIp(0, pixel_speed);
+         // move to bottom
+         this.rect.moveIp(0, Math.min(pixel_speed, target[y] - current[y]));
          moved = true;
      }
      if (target[y] < current[y]) {
-         this.rect.moveIp(0, -pixel_speed);
+         // move to top (not used yet in path)
+         this.rect.moveIp(0, -Math.min(pixel_speed, current[y] - target[y]));
          moved = true;
      }
 
