@@ -46,6 +46,8 @@ var Enemy = function(playSurface) {
 
      if (target[x] > current[x]) {
          // move to right
+         // Math.min is used to never exceed the target location and start
+         // bouncing back and forth in corners.
          this.rect.moveIp(Math.min(pixel_speed, target[x] - current[x]), 0);
          moved = true;
      }
@@ -137,8 +139,10 @@ function main() {
     var playSurface = new playsurface.PlaySurface([800, 600], [[0,30], [300,30], [300,100], [600,100], [600,300], [200,300], [200,400], [400,400], [400,600]]);
 
     var gEnemies= new gamejs.sprite.Group();
-    for (var i=0;i<1;i++) {
-        gEnemies.add(new Enemy(playSurface));
+    for (var i=0;i<5;i++) {
+        setTimeout(function() {
+            gEnemies.add(new Enemy(playSurface));
+        }, i * 500);
     }
     console.log(gEnemies);
 
