@@ -5,9 +5,6 @@ var Enemy = exports.Enemy = function(playSurface) {
     // call superconstructor
     Enemy.superConstructor.apply(this, arguments);
 
-    this.originalImage = gamejs.image.load("images/enemy.png");
-    var dims = this.originalImage.getSize();
-
     // config
     this.reward = 10;
     this.start_health = 1800;
@@ -18,9 +15,6 @@ var Enemy = exports.Enemy = function(playSurface) {
     this.destination_reached = false;
     this.distance_traveled = 0;
 
-    this.rotation = 0;
-    this.image = gamejs.transform.rotate(this.originalImage, this.rotation);
-
     // determine start location
     this.path = playSurface.path;
     this.path_index = 1; // 0 = starting location
@@ -28,7 +22,14 @@ var Enemy = exports.Enemy = function(playSurface) {
         return this.path[this.path_index];
     };
 
-    this.rect = new gamejs.Rect(this.path[0], dims);
+    this.loadImage = function(image) {
+        this.originalImage = gamejs.image.load("images/enemy.png");
+        this.rotation = 0;
+        this.image = gamejs.transform.rotate(this.originalImage, this.rotation);
+
+        var dims = this.originalImage.getSize();
+        this.rect = new gamejs.Rect(this.path[0], dims);
+    };
 
     this.doDamage = function(damage) {
         if (this.isDead()) {
@@ -136,3 +137,43 @@ Enemy.prototype.draw = function(surface) {
     draw.rect(surface, 'green', new gamejs.Rect([this.rect.left, this.rect.top - healthbarHeight], [this.rect.width, healthbarHeight]), 1);
     draw.rect(surface, 'green', new gamejs.Rect([this.rect.left, this.rect.top - healthbarHeight], [healthbarWidth, healthbarHeight]), 0);
 };
+
+
+var BasicEnemy = exports.BasicEnemy = function(playSurface) {
+    BasicEnemy.superConstructor.apply(this, arguments);
+
+    this.loadImage("images/enemy.png");
+
+    this.start_health = 1800;
+    this.reward = 10;
+    this.speed = 100;
+
+    return this;
+};
+gamejs.utils.objects.extend(BasicEnemy, Enemy);
+
+var SlowFatEnemy = exports.SlowFatEnemy = function(playSurface) {
+    SlowFatEnemy.superConstructor.apply(this, arguments);
+
+    this.loadImage("images/enemy.png");
+
+    // TODO: set this in a nicer way
+    this.start_health = 5000;
+    this.health = this.start_health;
+    this.reward = 50;
+    this.speed = 50;
+
+    return this;
+};
+gamejs.utils.objects.extend(SlowFatEnemy, Enemy);
+
+var FastEnemy = exports.FastEnemy = function(playSurface) {
+    FastEnemy.superConstructor.apply(this, arguments);
+
+    this.loadImage("images/enemy.png");
+
+    this.speed = 200;
+
+    return this;
+};
+gamejs.utils.objects.extend(FastEnemy, Enemy);

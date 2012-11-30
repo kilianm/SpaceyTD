@@ -23,13 +23,19 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
             this.gEnemies.add(new enemy(this));
         };
 
-        this.waves = [[enemies.Enemy,
-                       enemies.Enemy],
+        this.waves = [[enemies.BasicEnemy,
+                       enemies.SlowFatEnemy,
+                       enemies.FastEnemy],
 
-                      [enemies.Enemy,
-                       enemies.Enemy,
-                       enemies.Enemy,
-                       enemies.Enemy]];
+                      [enemies.FastEnemy,
+                       enemies.FastEnemy,
+                       enemies.SlowFatEnemy,
+                       enemies.BasicEnemy],
+
+                       enemies.BasicEnemy,
+                       enemies.BasicEnemy,
+                       enemies.BasicEnemy,
+                       enemies.BasicEnemy];
 
         this.spawnWave = function() {
             var self = this;
@@ -52,10 +58,14 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
             this.spawnWave();
         };
 
+        this.hasWaves = function() {
+            return (this.game_wave != this.waves.length - 1);
+        };
+
         this.handleWaves = function() {
             var secBetweenWaves = 3;
             if (this.gEnemies.sprites().length == 0) {
-                if (this.nextWavePending || this.game_wave == this.waves.length - 1) {
+                if (this.nextWavePending || !this.hasWaves()) {
                     return;
                 }
                 this.nextWavePending = true;

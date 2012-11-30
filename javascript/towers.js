@@ -153,7 +153,7 @@ var ProjectileTower = exports.ProjectileTower = function(playSurface, location) 
     this.rotationSpeed = 50;
     this.shootRange = 250;
     this.shootDamage = 100;
-    this.projectileSpeed = 150;
+    this.projectileSpeed = 250;
     this.msShootRatio = 200;
 
     // dynamic
