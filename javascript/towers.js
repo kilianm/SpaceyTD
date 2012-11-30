@@ -60,6 +60,7 @@ LaserTower.prototype.update = function(msDuration) {
         self.currentTargetEnemy = enemy;
         self.rotation = calculateDegreeByPoints(self.rect.center, enemy.rect.center);
         self.image = gamejs.transform.rotate(self.originalImage, self.rotation);
+
     } else {
         self.currentTargetEnemy = null;
 
