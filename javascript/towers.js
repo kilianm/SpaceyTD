@@ -136,7 +136,7 @@ BurningTower.prototype.draw = function(surface) {
     surface.blit(this.image, this.rect);
     if(this.shooting == true) {
         if(this.shootingAnimation >= this.shootRange) {
-            this.shootingAnimation = 5;
+            this.shootingAnimation = 15;
         }
         if(this.shootingAnimation < this.shootRange) {
             this.shootingAnimation += 5;
@@ -144,7 +144,12 @@ BurningTower.prototype.draw = function(surface) {
         if(this.shootingAnimation > this.shootRange) {
             this.shootingAnimation = this.shootRange;
         }
-        draw.circle(surface, 'rgba(255, 0, 0, 0.25)', this.rect.center, this.shootingAnimation);
+
+        var particleCount = 10;
+        for(var i=0; i<particleCount;i++)
+        {
+            draw.circle(surface, 'rgba(255, '+Math.round(Math.random()*100)+', 0, 0.1)', this.rect.center, (Math.random()*this.shootingAnimation));
+        }
     }
     return;
 
@@ -276,8 +281,9 @@ var Projectile = function(playSurface, location, enemy, speed, damage) {
     };
 
     this.draw = function(surface) {
-        draw.circle(surface, 'rgba(255, 255, 0, 0.7)', this.rect.center, 2);
-
+        draw.circle(surface, 'rgba(255, 255, 255, 1)', this.rect.center, 2);
+        var particle = new LaserParticle(this.playSurface, this.rect.center);
+        this.playSurface.particles.push(particle);
     };
     return this;
 };
