@@ -93,6 +93,8 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
         ];
 
         this.spawnWave = function() {
+            this.nextWavePending = false;
+
             var self = this;
             var current_wave = this.waves[this.game_wave];
             // enemies
