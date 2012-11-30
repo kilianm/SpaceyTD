@@ -66,19 +66,31 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
             this.gEnemies.add(new enemy(this));
         };
 
-        this.waves = [[enemies.BasicEnemy,
-                       enemies.SlowFatEnemy,
-                       enemies.FastEnemy],
+        this.waves = [
+          [enemies.BasicEnemy,
+           enemies.SlowFatEnemy,
+           enemies.BasicEnemy,
+           enemies.BasicEnemy],
 
-                      [enemies.FastEnemy,
-                       enemies.FastEnemy,
-                       enemies.SlowFatEnemy,
-                       enemies.BasicEnemy],
+          [enemies.FastEnemy,
+           enemies.FastEnemy,
+           enemies.VariatingSpeedEnemy,
+           enemies.SlowFatEnemy,
+           enemies.BasicEnemy,
+           enemies.VariatingSpeedEnemy],
 
-                       enemies.BasicEnemy,
-                       enemies.BasicEnemy,
-                       enemies.BasicEnemy,
-                       enemies.BasicEnemy];
+           [enemies.FastEnemy,
+           enemies.BasicEnemy,
+           enemies.FastEnemy,
+           enemies.FastEnemy,
+           enemies.SlowFatEnemy],
+
+           [enemies.SlowFatEnemy,
+            enemies.SlowFatEnemy,
+            enemies.FastEnemy,
+            enemies.VariatingSpeedEnemy,
+            enemies.SlowFatEnemy],
+        ];
 
         this.spawnWave = function() {
             var self = this;

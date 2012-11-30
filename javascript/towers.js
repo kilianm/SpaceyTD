@@ -15,7 +15,7 @@ var Tower = function(playSurface) {
     this.currentTargetEnemy = null;
 
     this.dims = [40, 40];
-    this.rect = new gamejs.Rect([0,0], this.dims);
+    this.rect = new gamejs.Rect([0,0]);
 
     this.setLocation = function(position) {
         this.rect = new gamejs.Rect(position, this.dims);

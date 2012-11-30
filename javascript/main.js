@@ -23,7 +23,10 @@ function main() {
         [500, 580]
     ]);
 
-    playSurface.spawnWave();
+    playSurface.nextWavePending = true;
+    setTimeout(function() {
+        playSurface.spawnWave();
+    }, 5000);
 
     // msDuration = time since last tick() call
     var tick = function(msDuration) {
@@ -47,6 +50,7 @@ gamejs.preload(['images/enemy.png',
                 'images/pulse-tower.png',
                 'images/enemy-green.png',
                 'images/enemy-blue.png',
+                'images/enemy-pink.png',
                 'images/icon-cash.png',
                 'images/icon-life.png',
                 'images/icon-wave.png',

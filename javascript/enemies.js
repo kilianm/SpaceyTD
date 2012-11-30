@@ -210,6 +210,19 @@ var FastEnemy = exports.FastEnemy = function(playSurface) {
 };
 gamejs.utils.objects.extend(FastEnemy, Enemy);
 
+var VariatingSpeedEnemy = exports.VariatingSpeedEnemy = function(playSurface) {
+    VariatingSpeedEnemy.superConstructor.apply(this, arguments);
+
+    this.loadImage("images/enemy-pink.png");
+
+    this.setReward(15);
+    this.setHealth(500);
+    this.setSpeed(100);
+
+    return this;
+};
+gamejs.utils.objects.extend(VariatingSpeedEnemy, Enemy);
+
 var ExplosionParticle = function(playSurface, location) {
     ExplosionParticle.superConstructor.apply(this, arguments);
     this.playSurface = playSurface;
