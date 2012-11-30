@@ -151,10 +151,10 @@ var ProjectileTower = exports.ProjectileTower = function(playSurface, location) 
 
     // config
     this.rotationSpeed = 50;
-    this.shootRange = 150;
+    this.shootRange = 250;
     this.shootDamage = 100;
     this.projectileSpeed = 150;
-    this.msShootRatio = 500;
+    this.msShootRatio = 200;
 
     // dynamic
     this.msSinceLastShot = 0;
@@ -255,13 +255,15 @@ var Projectile = function(playSurface, location, enemy, speed, damage) {
 
         var pixel_speed = this.speed * (msDuration / 1000);
 
-        var x = Math.cos(theta) * pixel_speed;
-        var y = Math.sin(theta) * pixel_speed;
+        var distance = $v.distance(current, target);
+
+        var x = Math.cos(theta) * Math.min(distance, pixel_speed);
+        var y = Math.sin(theta) * Math.min(distance, pixel_speed);
 
         this.rect.moveIp([x,y]);
 
         // hit!
-        if (dx == 0 && dy == 0) {
+        if (distance < 3) { // some loose constraint
             enemy.doDamage(damage);
             this.kill();
         }
