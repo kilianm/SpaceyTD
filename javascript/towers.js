@@ -84,7 +84,8 @@ LaserTower.prototype.update = function(msDuration) {
     }
 };
 LaserTower.prototype.draw = function(surface) {
-    surface.blit(this.image, this.rect);
+    var imgSize = this.image.getSize();
+    surface.blit(this.image, [this.rect.center[0]-(imgSize[0]/2), this.rect.center[1]-(imgSize[1]/2)]);
     if(this.currentTargetEnemy != null) {
         draw.line(surface, '#FF0000', this.rect.center, this.currentTargetEnemy.rect.center);
         var particleCount = 3;
@@ -139,7 +140,8 @@ BurningTower.prototype.update = function(msDuration) {
     }
 };
 BurningTower.prototype.draw = function(surface) {
-    surface.blit(this.image, this.rect);
+    var imgSize = this.image.getSize();
+    surface.blit(this.image, [this.rect.center[0]-(imgSize[0]/2), this.rect.center[1]-(imgSize[1]/2)]);
     if(this.shooting == true) {
         if(this.shootingAnimation >= this.shootRange) {
             this.shootingAnimation = 15;
@@ -236,6 +238,8 @@ ProjectileTower.prototype.update = function(msDuration) {
     }
 };
 ProjectileTower.prototype.draw = function(surface) {
+    var imgSize = this.image.getSize();
+    surface.blit(this.image, [this.rect.center[0]-(imgSize[0]/2), this.rect.center[1]-(imgSize[1]/2)]);
     surface.blit(this.image, this.rect);
 };
 

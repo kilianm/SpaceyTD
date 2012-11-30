@@ -323,6 +323,9 @@ var BuildOverlay = function(playSurface) {
                     self.blocked = true;
                 }
             }
+            if (this.towerToBuild && !this.playSurface.canAfford(this.towerToBuild.price)) {
+                self.blocked = true;
+            }
         }
 //        if (!this.playSurface.canAfford(this.towerToBuild.price)) {
 //            this.blocked = true;
