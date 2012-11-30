@@ -8,6 +8,9 @@ var Tower = function(playSurface) {
 
     this.playSurface = playSurface;
 
+    this.shootRange = 10;
+    this.shootDamage = 0;
+
     this.rotation = 0;
     this.currentTargetEnemy = null;
 

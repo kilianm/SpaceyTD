@@ -210,6 +210,9 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
                     if (event.key === gamejs.event.K_3) {
                         self.buildOverlay.setBuildTower(new towers.BurningTower(self));
                     }
+                    if (event.key === gamejs.event.K_ESC) {
+                        self.buildOverlay.setBuildTower(null);
+                    }
                 }
             });
         };
@@ -301,6 +304,9 @@ var BuildOverlay = function(playSurface) {
                 draw.rect(surface, 'rgba(255, 0, 0, 0.4)', this.rect);
             } else {
                 draw.rect(surface, 'rgba(0, 255, 0, 0.4)', this.rect);
+            }
+            if (this.towerToBuild) {
+                draw.circle(surface, "white", this.rect.center, this.towerToBuild.shootRange, 2);
             }
         }
     };
