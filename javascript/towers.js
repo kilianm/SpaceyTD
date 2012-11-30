@@ -152,7 +152,7 @@ var ProjectileTower = exports.ProjectileTower = function(playSurface, location) 
 
         this.shootRange = 150;
         this.shootDamage = 100;
-        this.projectileSpeed = 50;
+        this.projectileSpeed = 150;
         this.msShootRatio = 500;
 
         this.msSinceLastShot = 0;
@@ -214,11 +214,6 @@ ProjectileTower.prototype.update = function(msDuration) {
 };
 ProjectileTower.prototype.draw = function(surface) {
     surface.blit(this.image, this.rect);
-    if(this.currentTargetEnemy != null) {
-        draw.line(surface, '#FF0000', this.rect.center, this.currentTargetEnemy.rect.center);
-    }
-    return;
-
 };
 
 var calculateDegreeByPoints = function(pointLooking, pointLooked) {
@@ -251,44 +246,23 @@ var Projectile = function(playSurface, location, enemy, speed, damage) {
 
         this.update = function(msDuration) {
 
-            var x = 0;
-            var y = 0;
-
-            var pixel_speed = this.speed * (msDuration / 1000);
-            var moved = false;
             var target = this.enemy.rect.center;
             var current = this.rect.center;
-            var distance = 0;
-            if(target[x] > current[x]) {
-                // move to right
-                // Math.min is used to never exceed the target location and start
-                // bouncing back and forth in corners.
-                distance = Math.min(pixel_speed, target[x] - current[x]);
-                this.rect.moveIp(distance, 0);
-                moved = true;
-            }
-            if(target[x] < current[x]) {
-                // move to left
-                distance = -Math.min(pixel_speed, current[x] - target[x]);
-                this.rect.moveIp(distance, 0);
-                moved = true;
-            }
-            if(target[y] > current[y]) {
-                // move to bottom
-                distance = Math.min(pixel_speed, target[y] - current[y]);
-                this.rect.moveIp(0, distance);
-                moved = true;
-            }
-            if(target[y] < current[y]) {
-                // move to top (not used yet in path)
-                distance = -Math.min(pixel_speed, current[y] - target[y]);
-                this.rect.moveIp(0, distance);
-                moved = true;
-            }
-            if(!moved) {
-                //dat klopt nog niet helemaal
-                //this.enemy.doDamage(this.damage);
-            }
+
+            var dx = target[0] - current[0];
+            var dy = target[1] - current[1];
+
+            var theta = Math.atan2(dy, dx);
+
+            var pixel_speed = this.speed * (msDuration / 1000);
+
+            var x = Math.cos(theta) * pixel_speed;
+            var y = Math.sin(theta) * pixel_speed;
+
+            this.rect.moveIp([x,y]);
+
+            //IF hit DAMAGE!! and remove.
+            //also remove when enemy is dead
         };
 
         this.draw = function(surface) {
