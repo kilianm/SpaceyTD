@@ -13,12 +13,51 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
 
         this.rect = new gamejs.Rect([0, 0], rectSize);
         this.path = path;
+        this.pathThickness = 10;
 
         this.game_money = 0;
         this.game_lives = 10;
         this.game_wave = 0;
 
         var font = new gamejs.font.Font('20px monospace');
+
+        //convert path to Rects
+        this.pathRects = [];
+        var lastNode = null;
+        for (x in this.path) {
+            var pathNode = this.path[x];
+            if (lastNode != null) {
+                var nodeLT = null;
+                var nodeRB = null;
+                if (lastNode[0] == pathNode[0]) {
+                    if (lastNode[1] > pathNode[1]) {
+                        nodeLT = pathNode;
+                        nodeRB = lastNode;
+                    } else {
+                        nodeLT = lastNode;
+                        nodeRB = pathNode;
+                    }
+                } else if (lastNode[1] == pathNode[1]) {
+                    if (lastNode[0] > pathNode[0]) {
+                        nodeLT = pathNode;
+                        nodeRB = lastNode;
+                    } else {
+                        nodeLT = lastNode;
+                        nodeRB = pathNode;
+                    }
+                } else {
+                    throw new Exception('Path is inballanced!');
+                }
+                var x = nodeLT[0] - this.pathThickness;
+                var y = nodeLT[1] - this.pathThickness;
+                var width = (nodeRB[0] - nodeLT[0]) + this.pathThickness*2;
+                var height= (nodeRB[1] - nodeLT[1]) + this.pathThickness*2;
+
+                var pathSegment = new gamejs.Rect([x, y], [width, height]);
+                this.pathRects.push(pathSegment);
+            }
+            lastNode = pathNode;
+        }
 
         this.spawnEnemy = function(enemy) {
             this.gEnemies.add(new enemy(this));
@@ -105,7 +144,10 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
         };
 
         this.draw = function(mainSurface) {
-            draw.lines(mainSurface, "#F78181", false, this.path, 10);
+            for (x in this.pathRects) {
+                var pathSegment = this.pathRects[x];
+                draw.rect(mainSurface, "rgba(255, 255, 255, 0.4)", pathSegment);
+            }
 
             mainSurface.blit(font.render('$ ' + this.game_money, '#fff'), [700, 10]);
             mainSurface.blit(font.render('L ' + this.game_lives, '#fff'), [700, 40]);
@@ -164,6 +206,7 @@ var BuildOverlay = function(playSurface) {
     this.playSurface = playSurface;
 
     this.visible = true;
+    this.blocked = false;
 
     this.towerToBuild = null;
 
@@ -184,9 +227,7 @@ var BuildOverlay = function(playSurface) {
     };
 
     this.onMouseClick = function(position) {
-        //position = this.calculateSnapPosition(position);
-        //TODO: check if actually free..
-        if (this.towerToBuild) {
+        if (this.towerToBuild && !this.blocked) {
             console.log('building tower');
             this.towerToBuild.setLocation(this.rect.topleft);
             this.playSurface.addTower(this.towerToBuild);
@@ -202,20 +243,35 @@ var BuildOverlay = function(playSurface) {
         } else {
             this.visible = false;
         }
-        //new towers.ProjectileTower(this.playSurface, this.rect.topleft)
     };
 
     this.update = function(msDuration) {
+        var self = this;
         if (this.visible) {
+            self.blocked = false;
             this.playSurface.gTowers.forEach(function(tower) {
-
+                var clipRect = self.rect.clip(tower.rect);
+                if (clipRect.width !== 0 && clipRect.height !== 0) {
+                    self.blocked = true;
+                }
             });
+            for (x in this.playSurface.pathRects) {
+                var pathSegment = this.playSurface.pathRects[x];
+                var clipRect = self.rect.clip(pathSegment);
+                if (clipRect.width !== 0 && clipRect.height !== 0) {
+                    self.blocked = true;
+                }
+            }
         }
     };
 
     this.draw = function(surface) {
         if (this.visible) {
-            draw.rect(surface, 'rgba(0, 255, 0, 0.4)', this.rect);
+            if (this.blocked) {
+                draw.rect(surface, 'rgba(255, 0, 0, 0.4)', this.rect);
+            } else {
+                draw.rect(surface, 'rgba(0, 255, 0, 0.4)', this.rect);
+            }
         }
     };
     return this;
