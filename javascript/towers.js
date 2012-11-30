@@ -24,7 +24,7 @@ gamejs.utils.objects.extend(Tower, gamejs.sprite.Sprite);
 var LaserTower = exports.LaserTower = function(playSurface) {
     LaserTower.superConstructor.apply(this, arguments);
 
-    this.originalImage = gamejs.image.load("images/enemy.png");
+    this.originalImage = gamejs.image.load("images/laser-tower.png");
     this.image = gamejs.transform.rotate(this.originalImage, this.rotation);
 
     // config

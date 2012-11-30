@@ -44,6 +44,7 @@ gamejs.preload(['images/enemy.png',
                 'images/enemy-blue.png',
                 'images/icon-cash.png',
                 'images/icon-life.png',
-                'images/icon-wave.png']);
+                'images/icon-wave.png',
+                'images/laser-tower.png']);
 
 gamejs.ready(main);
