@@ -38,7 +38,7 @@ function main() {
 */
     // msDuration = time since last tick() call
     var tick = function(msDuration) {
-        playSurface.handleGameControlEvents();
+        //playSurface.handleGameControlEvents();
 
         // game loop
         if (playSurface.paused) {
