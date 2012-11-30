@@ -24,7 +24,18 @@ function main() {
     ]);
 
     playSurface.spawnWave();
-
+/*
+    var tower;
+    tower = new towers.LaserTower(playSurface);
+    tower.setLocation([400, 150]);
+    playSurface.addTower(tower);
+    tower = new towers.ProjectileTower(playSurface);
+    tower.setLocation([500, 150]);
+    playSurface.addTower(tower);
+    tower = new towers.BurningTower(playSurface);
+    tower.setLocation([550, 110]);
+    playSurface.addTower(tower);
+*/
     // msDuration = time since last tick() call
     var tick = function(msDuration) {
         playSurface.handleGameControlEvents();
