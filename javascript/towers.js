@@ -183,7 +183,9 @@ ProjectileTower.prototype.update = function(msDuration) {
         enemy = enemiesInRange[enemyDistances.pop()];
 
         if(this.msSinceLastShot >= this.msShootRatio) {
-            createProjectile(self.playSurface, self.rect.center, enemy, self.projectileSpeed, self.shootDamage);
+            var projectile = new Projectile(self.playSurface, self.rect.center, enemy, self.projectileSpeed, self.shootDamage);
+            self.playSurface.addProjectile(projectile);
+
             this.msSinceLastShot = 0;
         }
 
@@ -221,12 +223,6 @@ var calculateDegreeByPoints = function(pointLooking, pointLooked) {
     var theta = Math.atan2(dy, dx);
     var degrees = theta * 180 / Math.PI; // rads to degs
     return degrees;
-};
-
-var createProjectile = function(playSurface, launchPoint, enemy, speed, damage) {
-    console.log(["launch projectile!", launchPoint, enemy, speed, damage]);
-    var projectile = new Projectile(playSurface, launchPoint, enemy, speed, damage);
-    playSurface.addProjectile(projectile);
 };
 
 var Projectile = function(playSurface, location, enemy, speed, damage) {
