@@ -91,7 +91,7 @@ LaserTower.prototype.draw = function(surface) {
 var BurningTower = exports.BurningTower = function(playSurface) {
     BurningTower.superConstructor.apply(this, arguments);
 
-    this.originalImage = gamejs.image.load("images/enemy-1.png");
+    this.originalImage = gamejs.image.load("images/pulse-tower.png");
     this.image = gamejs.transform.rotate(this.originalImage, this.rotation);
 
     // config

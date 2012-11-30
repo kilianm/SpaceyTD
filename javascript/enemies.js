@@ -6,12 +6,13 @@ var Enemy = exports.Enemy = function(playSurface) {
     Enemy.superConstructor.apply(this, arguments);
 
     // config
-    this.reward = 10;
-    this.start_health = 1800;
+    this.rotateCorners = false;
+    // subclasses need to set:
+    // - reward
+    // - speed
+    // - health (start_health)
 
     // dynamic
-    this.speed = 100;
-    this.health = this.start_health;
     this.destination_reached = false;
     this.distance_traveled = 0;
 
@@ -23,13 +24,28 @@ var Enemy = exports.Enemy = function(playSurface) {
     };
 
     this.loadImage = function(image) {
-        this.originalImage = gamejs.image.load("images/enemy.png");
+        this.originalImage = gamejs.image.load(image);
         this.rotation = 0;
         this.image = gamejs.transform.rotate(this.originalImage, this.rotation);
 
         var dims = this.originalImage.getSize();
         this.rect = new gamejs.Rect(this.path[0], dims);
     };
+
+    // variable per enemy
+    this.setHealth = function(health) {
+        this.start_health = health;
+        this.health = this.start_health;
+    };
+    this.setSpeed = function(speed) {
+        this.speed = speed;
+    };
+    this.setRotateCorners = function(bool) {
+        this.rotateCorners = bool;
+    };
+    this.setReward = function(reward) {
+        this.reward = reward;
+    }
 
     this.doDamage = function(damage) {
         if (this.isDead()) {
@@ -111,20 +127,22 @@ Enemy.prototype.update = function(msDuration) {
         }
 
         // rotate
-        var new_target = this.path_target();
-        if(new_target[x] > target[x]) {
-            this.rotation = 0;
+        if (this.rotateCorners) {
+            var new_target = this.path_target();
+            if(new_target[x] > target[x]) {
+                this.rotation = 0;
+            }
+            if(new_target[x] < target[x]) {
+                this.rotation = -180;
+            }
+            if(new_target[y] > target[y]) {
+                this.rotation = 90;
+            }
+            if(new_target[y] < target[y]) {
+                this.rotation = -90;
+            }
+            this.image = gamejs.transform.rotate(this.originalImage, this.rotation);
         }
-        if(new_target[x] < target[x]) {
-            this.rotation = -180;
-        }
-        if(new_target[y] > target[y]) {
-            this.rotation = 90;
-        }
-        if(new_target[y] < target[y]) {
-            this.rotation = -90;
-        }
-        this.image = gamejs.transform.rotate(this.originalImage, this.rotation);
     }
 };
 Enemy.prototype.draw = function(surface) {
@@ -142,11 +160,11 @@ Enemy.prototype.draw = function(surface) {
 var BasicEnemy = exports.BasicEnemy = function(playSurface) {
     BasicEnemy.superConstructor.apply(this, arguments);
 
-    this.loadImage("images/enemy.png");
+    this.loadImage("images/enemy-blue.png");
 
-    this.start_health = 1800;
-    this.reward = 10;
-    this.speed = 100;
+    this.setReward(100);
+    this.setHealth(1800);
+    this.setSpeed(100);
 
     return this;
 };
@@ -155,13 +173,11 @@ gamejs.utils.objects.extend(BasicEnemy, Enemy);
 var SlowFatEnemy = exports.SlowFatEnemy = function(playSurface) {
     SlowFatEnemy.superConstructor.apply(this, arguments);
 
-    this.loadImage("images/enemy.png");
+    this.loadImage("images/enemy-green.png");
 
-    // TODO: set this in a nicer way
-    this.start_health = 5000;
-    this.health = this.start_health;
-    this.reward = 50;
-    this.speed = 50;
+    this.setReward(50);
+    this.setHealth(3000);
+    this.setSpeed(50);
 
     return this;
 };
@@ -172,7 +188,10 @@ var FastEnemy = exports.FastEnemy = function(playSurface) {
 
     this.loadImage("images/enemy.png");
 
-    this.speed = 200;
+    this.setReward(10);
+    this.setHealth(1800);
+    this.setSpeed(200);
+    this.setRotateCorners(true);
 
     return this;
 };

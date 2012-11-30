@@ -37,6 +37,7 @@ function main() {
     gamejs.time.fpsCallback(tick, this, 60);
 }
 
-gamejs.preload(['images/enemy.png', 'images/enemy-1.png']);
+gamejs.preload(['images/enemy.png', 'images/pulse-tower.png', 'images/enemy-1.png',
+                'images/enemy-green.png', 'images/enemy-blue.png']);
 
 gamejs.ready(main);

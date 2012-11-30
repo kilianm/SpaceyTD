@@ -109,6 +109,7 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
 
             mainSurface.blit(font.render('$ ' + this.game_money, '#fff'), [700, 10]);
             mainSurface.blit(font.render('L ' + this.game_lives, '#fff'), [700, 40]);
+            mainSurface.blit(font.render('# ' + (this.game_wave + 1), '#fff'), [700, 70]);
             this.gEnemies.draw(mainSurface);
             this.gTowers.draw(mainSurface);
             this.gProjectiles.draw(mainSurface);
