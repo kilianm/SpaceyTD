@@ -45,7 +45,7 @@ var Enemy = exports.Enemy = function(playSurface) {
     };
     this.setReward = function(reward) {
         this.reward = reward;
-    }
+    };
 
     this.doDamage = function(damage) {
         if (this.isDead()) {

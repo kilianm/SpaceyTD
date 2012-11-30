@@ -125,15 +125,15 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
 
         this.addProjectile = function(projectile) {
             this.gProjectiles.add(projectile);
-        }
+        };
 
         this.addParticle = function(particle) {
             this.gParticles.add(particle);
-        }
+        };
 
         this.addOverlay = function(overlay) {
             this.gOverlay.add(overlay);
-        }
+        };
 
         this.update = function(msDuration) {
             this.gEnemies.update(msDuration);
@@ -143,15 +143,24 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
             this.gOverlay.update(msDuration);
         };
 
+        this.drawHud = function(mainSurface) {
+            mainSurface.blit(gamejs.image.load("images/icon-cash.png"), [700, 10]);
+            mainSurface.blit(font.render(this.game_money, '#fff'), [735, 15]);
+
+            mainSurface.blit(gamejs.image.load("images/icon-life.png"), [700, 40]);
+            mainSurface.blit(font.render(this.game_lives, '#fff'), [735, 45]);
+
+            mainSurface.blit(gamejs.image.load("images/icon-wave.png"), [700, 70]);
+            mainSurface.blit(font.render((this.game_wave + 1), '#fff'), [735, 75]);
+        };
+
         this.draw = function(mainSurface) {
             for (x in this.pathRects) {
                 var pathSegment = this.pathRects[x];
                 draw.rect(mainSurface, "rgba(255, 255, 255, 0.4)", pathSegment);
             }
 
-            mainSurface.blit(font.render('$ ' + this.game_money, '#fff'), [700, 10]);
-            mainSurface.blit(font.render('L ' + this.game_lives, '#fff'), [700, 40]);
-            mainSurface.blit(font.render('# ' + (this.game_wave + 1), '#fff'), [700, 70]);
+            this.drawHud(mainSurface);
             this.gEnemies.draw(mainSurface);
             this.gTowers.draw(mainSurface);
             this.gProjectiles.draw(mainSurface);
