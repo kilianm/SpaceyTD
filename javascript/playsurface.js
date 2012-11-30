@@ -16,7 +16,7 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
         this.path = path;
         this.pathThickness = 10;
 
-        this.game_money = 0;
+        this.game_money = 200;
         this.game_lives = 10;
         this.game_wave = 0;
 
@@ -229,6 +229,17 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
         this.buildOverlay = new BuildOverlay(this);
         this.addOverlay(this.buildOverlay);
 
+        this.buy = function(amount) {
+            if (this.canAfford) {
+                this.game_money -= amount;
+                return true;
+            }
+            return false;
+        };
+
+        this.canAfford = function(amount) {
+            return (this.game_money - amount >= 0);
+        };
 
         return this;
     };
@@ -261,10 +272,15 @@ var BuildOverlay = function(playSurface) {
 
     this.onMouseClick = function(position) {
         if (this.towerToBuild && !this.blocked) {
-            console.log('building tower');
-            this.towerToBuild.setLocation(this.rect.topleft);
-            this.playSurface.addTower(this.towerToBuild);
-            this.setBuildTower(null);
+            if (this.playSurface.canAfford(this.towerToBuild.price)) {
+                console.log('building tower');
+                this.towerToBuild.setLocation(this.rect.topleft);
+                this.playSurface.addTower(this.towerToBuild);
+                this.playSurface.buy(this.towerToBuild.price);
+                this.setBuildTower(null);
+            } else {
+                console.log('cant afford');
+            }
         }
     };
 
@@ -296,6 +312,9 @@ var BuildOverlay = function(playSurface) {
                 }
             }
         }
+//        if (!this.playSurface.canAfford(this.towerToBuild.price)) {
+//            this.blocked = true;
+//        }
     };
 
     this.draw = function(surface) {

@@ -34,6 +34,7 @@ var LaserTower = exports.LaserTower = function(playSurface) {
     this.rotationSpeed = 50;
     this.shootRange = 150;
     this.shootDamage = 3;
+    this.price = 20;
 
     return this;
 };
@@ -106,6 +107,7 @@ var BurningTower = exports.BurningTower = function(playSurface) {
     // config
     this.shootRange = 80;
     this.shootDamage = 3;
+    this.price = 65;
 
     // dynamic
     this.shooting = false;
@@ -173,6 +175,7 @@ var ProjectileTower = exports.ProjectileTower = function(playSurface) {
     this.shootDamage = 100;
     this.projectileSpeed = 250;
     this.msShootRatio = 200;
+    this.price = 70;
 
     // dynamic
     this.msSinceLastShot = 0;
