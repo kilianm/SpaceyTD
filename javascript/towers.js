@@ -3,7 +3,7 @@ var draw = require('gamejs/draw');
 var $v = require('gamejs/utils/vectors');
 
 
-var Tower = function(playSurface, location) {
+var Tower = function(playSurface) {
     Tower.superConstructor.apply(this, arguments);
 
     this.playSurface = playSurface;
@@ -11,13 +11,17 @@ var Tower = function(playSurface, location) {
     this.rotation = 0;
     this.currentTargetEnemy = null;
 
-    var dims = [40, 40];
-    this.rect = new gamejs.Rect(location, dims);
+    this.dims = [40, 40];
+    this.rect = new gamejs.Rect([0,0], this.dims);
+
+    this.setLocation = function(position) {
+        this.rect = new gamejs.Rect(position, this.dims);
+    }
 };
 gamejs.utils.objects.extend(Tower, gamejs.sprite.Sprite);
 
 //LASER TOWER
-var LaserTower = exports.LaserTower = function(playSurface, location) {
+var LaserTower = exports.LaserTower = function(playSurface) {
     LaserTower.superConstructor.apply(this, arguments);
 
     this.originalImage = gamejs.image.load("images/enemy.png");
@@ -84,7 +88,7 @@ LaserTower.prototype.draw = function(surface) {
 
 
 // BURNING TOWER
-var BurningTower = exports.BurningTower = function(playSurface, location) {
+var BurningTower = exports.BurningTower = function(playSurface) {
     BurningTower.superConstructor.apply(this, arguments);
 
     this.originalImage = gamejs.image.load("images/enemy-1.png");
@@ -142,7 +146,7 @@ BurningTower.prototype.draw = function(surface) {
 
 
 //PROJECTILE TOWER
-var ProjectileTower = exports.ProjectileTower = function(playSurface, location) {
+var ProjectileTower = exports.ProjectileTower = function(playSurface) {
     ProjectileTower.superConstructor.apply(this, arguments);
     this.playSurface = playSurface;
 

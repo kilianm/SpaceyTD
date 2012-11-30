@@ -2,6 +2,7 @@ var gamejs = require('gamejs');
 var draw = require('gamejs/draw');
 var font = require('gamejs/font');
 var enemies = require('./enemies');
+var towers = require('./towers');
 
 var PlaySurface = exports.PlaySurface = function(rectSize, path) {
         this.gEnemies = new gamejs.sprite.Group();
@@ -132,6 +133,20 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
                         self.buildOverlay.updateMouseLocation(event.pos);
                     }
                 }
+                if (event.type === gamejs.event.MOUSE_UP) {
+                    self.buildOverlay.onMouseClick(event.pos);
+                }
+                if (event.type === gamejs.event.KEY_UP) {
+                    if (event.key === gamejs.event.K_1) {
+                        self.buildOverlay.setBuildTower(new towers.LaserTower(self));
+                    }
+                    if (event.key === gamejs.event.K_2) {
+                        self.buildOverlay.setBuildTower(new towers.ProjectileTower(self));
+                    }
+                    if (event.key === gamejs.event.K_3) {
+                        self.buildOverlay.setBuildTower(new towers.BurningTower(self));
+                    }
+                }
             });
         };
 
@@ -149,23 +164,58 @@ var BuildOverlay = function(playSurface) {
 
     this.visible = true;
 
-    this.rect = new gamejs.Rect([0,0], [50, 50]);
+    this.towerToBuild = null;
 
-    this.updateMouseLocation = function(position) {
+    this.rect = new gamejs.Rect([0,0], [0,0]);
+
+    this.calculateSnapPosition = function(position) {
         var x = Math.round(position[0] / 10)*10;
         var y = Math.round(position[1] / 10)*10;
-        this.rect.center = [x, y];
-        //this.rect = new gamejs.Rect(position, [50, 50]);
-        //this.rect.moveIp([position[0], position[1]]);
-    }
+        return [x,y];
+    };
+
+    this.updateMouseLocation = function(position) {
+        position = this.calculateSnapPosition(position);
+        if (this.rect.center[0] != position[0] || this.rect.center[1] != position[1]) {
+            //it actually moved.
+            this.rect.center = position;
+        }
+    };
+
+    this.onMouseClick = function(position) {
+        //position = this.calculateSnapPosition(position);
+        //TODO: check if actually free..
+        if (this.towerToBuild) {
+            console.log('building tower');
+            this.towerToBuild.setLocation(this.rect.topleft);
+            this.playSurface.addTower(this.towerToBuild);
+            this.setBuildTower(null);
+        }
+    };
+
+    this.setBuildTower = function(tower) {
+        this.towerToBuild = tower;
+        if (this.towerToBuild) {
+            this.rect = new gamejs.Rect([this.rect.x, this.rect.y], tower.dims);
+            this.visible = true;
+        } else {
+            this.visible = false;
+        }
+        //new towers.ProjectileTower(this.playSurface, this.rect.topleft)
+    };
 
     this.update = function(msDuration) {
+        if (this.visible) {
+            this.playSurface.gTowers.forEach(function(tower) {
 
+            });
+        }
     };
 
     this.draw = function(surface) {
-        draw.rect(surface, 'rgba(0, 255, 0, 0.4)', this.rect);
-
+        if (this.visible) {
+            draw.rect(surface, 'rgba(0, 255, 0, 0.4)', this.rect);
+        }
     };
     return this;
 };

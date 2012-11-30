@@ -23,14 +23,6 @@ function main() {
         [500, 600]
     ]);
 
-    // towers
-    playSurface.addTower(new towers.LaserTower(playSurface, [200, 50]));
-    playSurface.addTower(new towers.BurningTower(playSurface, [250, 50]));
-    playSurface.addTower(new towers.ProjectileTower(playSurface, [250, 100]));
-    playSurface.addTower(new towers.LaserTower(playSurface, [250, 150]));
-    playSurface.addTower(new towers.LaserTower(playSurface, [300, 150]));
-    playSurface.addTower(new towers.LaserTower(playSurface, [350, 150]));
-
     playSurface.spawnWave();
 
     // msDuration = time since last tick() call
