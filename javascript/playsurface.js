@@ -15,20 +15,57 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
 
         this.game_money = 0;
         this.game_lives = 10;
+        this.game_wave = 0;
 
         var font = new gamejs.font.Font('20px monospace');
 
-        this.spawnEnemy = function() {
-            this.gEnemies.add(new enemies.Enemy(this));
+        this.spawnEnemy = function(enemy) {
+            this.gEnemies.add(new enemy(this));
         };
 
+        this.waves = [[enemies.Enemy,
+                       enemies.Enemy],
+
+                      [enemies.Enemy,
+                       enemies.Enemy,
+                       enemies.Enemy,
+                       enemies.Enemy]];
+
         this.spawnWave = function() {
-            // enemies
             var self = this;
-            for(var i = 0; i < 5; i++) {
+            var current_wave = this.waves[this.game_wave];
+            // enemies
+            var msBetweenEnemy = 500;
+            var enemyCounter = 0;
+            current_wave.forEach(function(enemy) {
                 setTimeout(function() {
-                    self.spawnEnemy();
-                }, i * 500);
+                    self.spawnEnemy(enemy);
+                }, enemyCounter * msBetweenEnemy);
+                enemyCounter++;
+            });
+        };
+
+        this.nextWavePending = false;
+
+        this.nextWave = function() {
+            this.game_wave++;
+            this.spawnWave();
+        };
+
+        this.handleWaves = function() {
+            var secBetweenWaves = 3;
+            if (this.gEnemies.sprites().length == 0) {
+                if (this.nextWavePending || this.game_wave == this.waves.length - 1) {
+                    return;
+                }
+                this.nextWavePending = true;
+                // set timer, show message that next wave will begin in....
+                var self = this;
+
+                //this.buildOverlay.blit(font.render('Next wave starting in ' + secBetweenWaves), [700, 10]);
+                setTimeout(function() {
+                    self.nextWave();
+                }, secBetweenWaves * 1000);
             }
         };
 
@@ -91,11 +128,6 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
         this.buildOverlay = new BuildOverlay(this);
         this.addOverlay(this.buildOverlay);
 
-        this.handleWaves = function() {
-            if (this.gEnemies.sprites().length == 0) {
-                //console.log('ALL DEAD');
-            }
-        };
 
         return this;
     };
