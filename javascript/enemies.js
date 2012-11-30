@@ -4,6 +4,7 @@ var draw = require('gamejs/draw');
 var Enemy = exports.Enemy = function(playSurface) {
     // call superconstructor
     Enemy.superConstructor.apply(this, arguments);
+    this.playSurface = playSurface
 
     // config
     this.rotateCorners = false;
@@ -60,6 +61,16 @@ var Enemy = exports.Enemy = function(playSurface) {
                     'reward': this.reward
                 }
             });
+
+            var particleCount = 20;
+            for(var i=0; i<particleCount;i++)
+            {
+                var particle = new ExplosionParticle(this.playSurface, this.rect.center);
+                this.playSurface.particles.push(particle);
+                var particle = new ExplosionPartParticle(this.playSurface, this.rect.center);
+                this.playSurface.particles.push(particle);
+            }
+
             this.kill();
         }
     };
@@ -196,3 +207,112 @@ var FastEnemy = exports.FastEnemy = function(playSurface) {
     return this;
 };
 gamejs.utils.objects.extend(FastEnemy, Enemy);
+
+var ExplosionParticle = function(playSurface, location) {
+    ExplosionParticle.superConstructor.apply(this, arguments);
+    this.playSurface = playSurface;
+
+    this.posX = location[0];
+    this.posY = location[1];
+
+    this.velX = (Math.random()*2)-1;
+    this.velY = (Math.random()*2)-1;
+    this.drag = 0.96;
+
+    this.shrink = 1;
+    this.size = Math.round(Math.random()*15);
+
+    // current transparency of the image
+    this.alpha = 1;
+    // subtracted from the alpha every frame to make it fade out
+    this.fade = 0.03;
+
+    this.rect = new gamejs.Rect(location, [1, 1]);
+
+    this.update = function(msDuration) {
+        // simulate drag
+        this.velX *= this.drag;
+        this.velY *= this.drag;
+
+        // and the velocity to the position
+        this.posX += this.velX;
+        this.posY += this.velY;
+
+        // shrink the particle
+        //this.size *= this.shrink;
+
+        // and fade it out
+        this.alpha -= this.fade;
+    };
+
+    this.draw = function(surface) {
+        var c = surface.context;
+        // set the fill style to have the right alpha
+        var greenC = Math.round(Math.random()*255);
+        c.fillStyle = "rgba(255,"+greenC+",0,"+this.alpha+")";
+
+        // draw a circle of the required size
+        c.beginPath();
+        c.arc(this.posX, this.posY, this.size, 0, Math.PI*2, true);
+        c.closePath();
+
+        // and fill it
+        c.fill();
+    };
+    return this;
+};
+gamejs.utils.objects.extend(ExplosionParticle, gamejs.sprite.Sprite);
+
+var ExplosionPartParticle = function(playSurface, location) {
+    ExplosionPartParticle.superConstructor.apply(this, arguments);
+    this.playSurface = playSurface;
+
+    this.posX = location[0];
+    this.posY = location[1];
+
+    this.velX = (Math.random()*50)-25;
+    this.velY = (Math.random()*50)-25;
+    this.drag = 0.90;
+
+    this.shrink = 1;
+    this.size = Math.round(Math.random()*15);
+
+    // current transparency of the image
+    this.alpha = 1;
+    // subtracted from the alpha every frame to make it fade out
+    this.fade = 0.10;
+
+    this.rect = new gamejs.Rect(location, [1, 1]);
+
+    this.update = function(msDuration) {
+        // simulate drag
+        this.velX *= this.drag;
+        this.velY *= this.drag;
+
+        // and the velocity to the position
+        this.posX += this.velX;
+        this.posY += this.velY;
+
+        // shrink the particle
+        //this.size *= this.shrink;
+
+        // and fade it out
+        this.alpha -= this.fade;
+    };
+
+    this.draw = function(surface) {
+        var c = surface.context;
+        // set the fill style to have the right alpha
+        c.fillStyle = "rgba(255,255,255,"+this.alpha+")";
+
+        // draw a circle of the required size
+        c.beginPath();
+        c.arc(this.posX, this.posY, this.size, 0, Math.PI*2, true);
+        c.closePath();
+
+        // and fill it
+        c.fill();
+    };
+    return this;
+};
+gamejs.utils.objects.extend(ExplosionPartParticle, gamejs.sprite.Sprite);

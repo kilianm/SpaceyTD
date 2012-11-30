@@ -8,7 +8,8 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
         this.gEnemies = new gamejs.sprite.Group();
         this.gTowers = new gamejs.sprite.Group();
         this.gProjectiles = new gamejs.sprite.Group();
-        this.gParticles = new gamejs.sprite.Group();
+        this.particles = [];
+        this.maxParticles = 500;
         this.gOverlay = new gamejs.sprite.Group();
 
         this.rect = new gamejs.Rect([0, 0], rectSize);
@@ -127,10 +128,6 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
             this.gProjectiles.add(projectile);
         };
 
-        this.addParticle = function(particle) {
-            this.gParticles.add(particle);
-        };
-
         this.addOverlay = function(overlay) {
             this.gOverlay.add(overlay);
         };
@@ -139,7 +136,9 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
             this.gEnemies.update(msDuration);
             this.gTowers.update(msDuration);
             this.gProjectiles.update(msDuration);
-            this.gParticles.update(msDuration);
+            for (var i in this.particles) {
+                this.particles[i].update(msDuration);
+            }
             this.gOverlay.update(msDuration);
         };
 
@@ -164,8 +163,15 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
             this.gEnemies.draw(mainSurface);
             this.gTowers.draw(mainSurface);
             this.gProjectiles.draw(mainSurface);
-            this.gParticles.draw(mainSurface);
+            for (var i in this.particles) {
+                this.particles[i].draw(mainSurface);
+            }
             this.gOverlay.draw(mainSurface);
+
+            //clean up particles
+            while(this.particles.length > this.maxParticles) {
+                this.particles.shift();
+            }
         };
 
         this.handleMainEvents = function() {
