@@ -2,53 +2,53 @@ var gamejs = require('gamejs');
 var draw = require('gamejs/draw');
 
 var Enemy = exports.Enemy = function(playSurface) {
-        // call superconstructor
-        Enemy.superConstructor.apply(this, arguments);
+    // call superconstructor
+    Enemy.superConstructor.apply(this, arguments);
 
-        this.originalImage = gamejs.image.load("images/enemy.png");
-        var dims = this.originalImage.getSize();
+    this.originalImage = gamejs.image.load("images/enemy.png");
+    var dims = this.originalImage.getSize();
 
-        // config
-        this.reward = 10;
-        this.start_health = 1800;
+    // config
+    this.reward = 10;
+    this.start_health = 1800;
 
-        // dynamic
-        this.speed = 100;
-        this.health = this.start_health;
-        this.destination_reached = false;
-        this.distance_traveled = 0;
+    // dynamic
+    this.speed = 100;
+    this.health = this.start_health;
+    this.destination_reached = false;
+    this.distance_traveled = 0;
 
-        this.rotation = 0;
-        this.image = gamejs.transform.rotate(this.originalImage, this.rotation);
+    this.rotation = 0;
+    this.image = gamejs.transform.rotate(this.originalImage, this.rotation);
 
-        // determine start location
-        this.path = playSurface.path;
-        this.path_index = 1; // 0 = starting location
-        this.path_target = function() {
-            return this.path[this.path_index];
-        };
-
-        this.rect = new gamejs.Rect(this.path[0], dims);
-
-        this.doDamage = function(damage) {
-            if (this.isDead()) {
-                return;
-            }
-            this.health -= damage;
-            if(this.health <= 0) {
-                gamejs.event.post({
-                    type: gamejs.event.USEREVENT,
-                    data: {
-                        'type': 'enemy-killed',
-                        'reward': this.reward
-                    }
-                });
-                this.kill();
-            }
-        };
-
-        return this;
+    // determine start location
+    this.path = playSurface.path;
+    this.path_index = 1; // 0 = starting location
+    this.path_target = function() {
+        return this.path[this.path_index];
     };
+
+    this.rect = new gamejs.Rect(this.path[0], dims);
+
+    this.doDamage = function(damage) {
+        if (this.isDead()) {
+            return;
+        }
+        this.health -= damage;
+        if(this.health <= 0) {
+            gamejs.event.post({
+                type: gamejs.event.USEREVENT,
+                data: {
+                    'type': 'enemy-killed',
+                    'reward': this.reward
+                }
+            });
+            this.kill();
+        }
+    };
+
+    return this;
+};
 
 // inherit (actually: set prototype)
 gamejs.utils.objects.extend(Enemy, gamejs.sprite.Sprite);

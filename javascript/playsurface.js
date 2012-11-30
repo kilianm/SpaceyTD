@@ -22,6 +22,16 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
             this.gEnemies.add(new enemies.Enemy(this));
         };
 
+        this.spawnWave = function() {
+            // enemies
+            var self = this;
+            for(var i = 0; i < 5; i++) {
+                setTimeout(function() {
+                    self.spawnEnemy();
+                }, i * 500);
+            }
+        };
+
         this.addTower = function(tower) {
             this.gTowers.add(tower);
         };
@@ -80,6 +90,12 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
 
         this.buildOverlay = new BuildOverlay(this);
         this.addOverlay(this.buildOverlay);
+
+        this.handleWaves = function() {
+            if (this.gEnemies.sprites().length == 0) {
+                //console.log('ALL DEAD');
+            }
+        };
 
         return this;
     };

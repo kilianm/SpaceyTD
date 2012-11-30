@@ -23,13 +23,6 @@ function main() {
         [500, 600]
     ]);
 
-    // enemies
-    for(var i = 0; i < 5; i++) {
-        setTimeout(function() {
-            playSurface.spawnEnemy();
-        }, i * 500);
-    }
-
     // towers
     playSurface.addTower(new towers.LaserTower(playSurface, [200, 50]));
     playSurface.addTower(new towers.BurningTower(playSurface, [250, 50]));
@@ -38,6 +31,8 @@ function main() {
     playSurface.addTower(new towers.LaserTower(playSurface, [300, 150]));
     playSurface.addTower(new towers.LaserTower(playSurface, [350, 150]));
 
+    playSurface.spawnWave();
+
     // msDuration = time since last tick() call
     var tick = function(msDuration) {
             // game loop
@@ -45,6 +40,7 @@ function main() {
             playSurface.update(msDuration);
             playSurface.draw(mainSurface);
             playSurface.handleMainEvents();
+            playSurface.handleWaves();
         };
     gamejs.time.fpsCallback(tick, this, 60);
 }
