@@ -4,7 +4,7 @@ var draw = require('gamejs/draw');
 var Enemy = exports.Enemy = function(playSurface) {
     // call superconstructor
     Enemy.superConstructor.apply(this, arguments);
-    this.playSurface = playSurface
+    this.playSurface = playSurface;
 
     // config
     this.rotateCorners = false;
@@ -30,7 +30,9 @@ var Enemy = exports.Enemy = function(playSurface) {
         this.image = gamejs.transform.rotate(this.originalImage, this.rotation);
 
         var dims = this.originalImage.getSize();
-        this.rect = new gamejs.Rect(this.path[0], dims);
+        var startX = this.path[0][0] - dims[0] / 2;
+        var startY = this.path[0][1] - dims[1] / 2;
+        this.rect = new gamejs.Rect([startX, startY], dims);
     };
 
     // variable per enemy

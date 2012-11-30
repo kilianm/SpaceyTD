@@ -161,6 +161,7 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
                 draw.rect(mainSurface, "rgba(255, 255, 255, 0.4)", pathSegment);
             }
 
+            mainSurface.blit(gamejs.image.load("images/mask.png"), [20, 20]);
             mainSurface.blit(gamejs.image.load("images/target.png"), [470, 560]);
 
             this.drawHud(mainSurface);
@@ -195,6 +196,7 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
                         self.buildOverlay.updateMouseLocation(event.pos);
                     }
                 }
+
                 if (event.type === gamejs.event.MOUSE_UP) {
                     self.buildOverlay.onMouseClick(event.pos);
                 }

@@ -24,21 +24,10 @@ function main() {
     ]);
 
     playSurface.spawnWave();
-/*
-    var tower;
-    tower = new towers.LaserTower(playSurface);
-    tower.setLocation([400, 150]);
-    playSurface.addTower(tower);
-    tower = new towers.ProjectileTower(playSurface);
-    tower.setLocation([500, 150]);
-    playSurface.addTower(tower);
-    tower = new towers.BurningTower(playSurface);
-    tower.setLocation([550, 110]);
-    playSurface.addTower(tower);
-*/
+
     // msDuration = time since last tick() call
     var tick = function(msDuration) {
-        playSurface.handleGameControlEvents();
+        //playSurface.handleGameControlEvents();
 
         // game loop
         if (playSurface.paused) {
@@ -62,6 +51,7 @@ gamejs.preload(['images/enemy.png',
                 'images/icon-life.png',
                 'images/icon-wave.png',
                 'images/laser-tower.png',
-                'images/target.png']);
+                'images/target.png',
+                'images/mask.png']);
 
 gamejs.ready(main);
