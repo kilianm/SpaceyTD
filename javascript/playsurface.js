@@ -306,7 +306,8 @@ var BuildOverlay = function(playSurface) {
                 draw.rect(surface, 'rgba(0, 255, 0, 0.4)', this.rect);
             }
             if (this.towerToBuild) {
-                draw.circle(surface, "white", this.rect.center, this.towerToBuild.shootRange, 2);
+                draw.circle(surface, "rgba(255, 255, 255, 1)", this.rect.center, this.towerToBuild.shootRange, 2);
+                draw.circle(surface, "rgba(255, 255, 255, 0.2)", this.rect.center, this.towerToBuild.shootRange);
             }
         }
     };
