@@ -19,6 +19,8 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
         this.game_lives = 10;
         this.game_wave = 0;
 
+        this.paused = false;
+
         var font = new gamejs.font.Font('20px monospace');
 
         //convert path to Rects
@@ -155,10 +157,12 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
         };
 
         this.draw = function(mainSurface) {
-            for (x in this.pathRects) {
+            for (var x in this.pathRects) {
                 var pathSegment = this.pathRects[x];
                 draw.rect(mainSurface, "rgba(255, 255, 255, 0.4)", pathSegment);
             }
+
+            mainSurface.blit(gamejs.image.load("images/target.png"), [470, 560]);
 
             this.drawHud(mainSurface);
             this.gEnemies.draw(mainSurface);
@@ -198,6 +202,15 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
                     if (event.key === gamejs.event.K_3) {
                         self.buildOverlay.setBuildTower(new towers.BurningTower(self));
                     }
+                }
+            });
+        };
+        this.handleGameControlEvents = function() {
+            var events = gamejs.event.get();
+            var self = this;
+            events.forEach(function(event) {
+                if (event.type === gamejs.event.USEREVENT && event.data.type == 'pause') {
+                    self.paused = !self.paused;
                 }
             });
         };
