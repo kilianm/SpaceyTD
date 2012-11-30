@@ -263,7 +263,7 @@ var Projectile = function(playSurface, location, enemy, speed, damage) {
         this.rect.moveIp([x,y]);
 
         // hit!
-        if (distance < 3) { // some loose constraint
+        if (distance < 3) { // some acceptable hit range
             enemy.doDamage(damage);
             this.kill();
         }

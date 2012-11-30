@@ -1,19 +1,23 @@
 var gamejs = require('gamejs');
+var draw = require('gamejs/draw');
 
 var Enemy = exports.Enemy = function(playSurface) {
         // call superconstructor
         Enemy.superConstructor.apply(this, arguments);
 
-        this.reward = 10;
-        this.speed = 100; // pixels per second?
-        this.health = 1800;
-        this.destination_reached = false;
-        this.distance_traveled = 0;
-
         this.originalImage = gamejs.image.load("images/enemy.png");
         var dims = this.originalImage.getSize();
 
-        // determine target location
+        // config
+        this.reward = 10;
+        this.start_health = 1800;
+
+        // dynamic
+        this.speed = 100;
+        this.health = this.start_health;
+        this.destination_reached = false;
+        this.distance_traveled = 0;
+
         this.rotation = 0;
         this.image = gamejs.transform.rotate(this.originalImage, this.rotation);
 
@@ -27,6 +31,9 @@ var Enemy = exports.Enemy = function(playSurface) {
         this.rect = new gamejs.Rect(this.path[0], dims);
 
         this.doDamage = function(damage) {
+            if (this.isDead()) {
+                return;
+            }
             this.health -= damage;
             if(this.health <= 0) {
                 gamejs.event.post({
@@ -118,4 +125,14 @@ Enemy.prototype.update = function(msDuration) {
         }
         this.image = gamejs.transform.rotate(this.originalImage, this.rotation);
     }
+};
+Enemy.prototype.draw = function(surface) {
+    surface.blit(this.image, this.rect);
+
+    // health bar
+    var healthRatio = (this.health / this.start_health);
+    var healthbarHeight = 3;
+    var healthbarWidth = Math.floor(this.rect.width * healthRatio);
+    draw.rect(surface, 'green', new gamejs.Rect([this.rect.left, this.rect.top - healthbarHeight], [this.rect.width, healthbarHeight]), 1);
+    draw.rect(surface, 'green', new gamejs.Rect([this.rect.left, this.rect.top - healthbarHeight], [healthbarWidth, healthbarHeight]), 0);
 };
