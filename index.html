@@ -8,16 +8,16 @@
            background:#000;
            color:#222;
         }
-        
+
         div#splash {
             width: 800px;
             height: 600px;
             background: url(images/background-splash.png);
             text-align: center;
         }
-        
+
         a.btn {
-            font-family: "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+            font-family: "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, "Lucida Grande", sans-serif;
             margin-top: 350px;
             border-radius: 4px;
             border: none;
@@ -29,7 +29,7 @@
             text-align: center;
             padding: 7px 20px 9px;
             cursor: pointer;
-            text-shadow: 0 1px 1px 
+            text-shadow: 0 1px 1px
             rgba(0, 0, 0, 0.4);
             -webkit-transition: 0.1s linear;
             -moz-transition: 0.1s linear;
@@ -39,22 +39,22 @@
             background: #ae3679;
             box-shadow: #680e40 0 6px 0px, rgba(0, 0, 0, 0.3) 0 10px 3px;
         }
-        
+
             a.btn:active {
                 position: relative;
                 top: 3px;
-                box-shadow: #680e40 0 4px 0px, rgba(0, 0, 0, 0.3) 0 6px 3px;   
+                box-shadow: #680e40 0 4px 0px, rgba(0, 0, 0, 0.3) 0 6px 3px;
             }
-        
+
     </style>
     <script src="javascript/lib/yabble.js"></script>
     <script src="javascript/lib/gamejs.min.js"></script>
 </head>
 <body>
     <div id="splash">
-    
+
         <a href="javascript:void(0);" class="btn" id="play-button">Play game</a>
-        
+
     </div>
 
     <div>
@@ -64,9 +64,9 @@
         <canvas id="gjs-canvas" style="background-image: url(images/background.png); display: none;"></canvas>
     </div>
     <div style="display: none;">
-        
+
         <iframe width="420" height="315" src="http://www.youtube.com/embed/nO_MHFWfAxY?autoplay=1&loop=1&start=2" frameborder="0" allowfullscreen></iframe>
-        
+
     </div>
     <script>
         require.setModuleRoot('./javascript/');

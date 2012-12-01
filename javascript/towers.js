@@ -108,7 +108,7 @@ var BurningTower = exports.BurningTower = function(playSurface) {
 
     // config
     this.shootRange = 80;
-    this.shootDamage = 3;
+    this.shootDamage = 5;
     this.price = 65;
 
     // dynamic
@@ -175,7 +175,7 @@ var ProjectileTower = exports.ProjectileTower = function(playSurface) {
     // config
     this.rotationSpeed = 50;
     this.shootRange = 250;
-    this.shootDamage = 100;
+    this.shootDamage = 50;
     this.projectileSpeed = 250;
     this.msShootRatio = 200;
     this.price = 70;

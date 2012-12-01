@@ -68,7 +68,7 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
 
         this.waves = [
           [enemies.BasicEnemy,
-           enemies.SlowFatEnemy,
+           enemies.VariatingSpeedEnemy,
            enemies.BasicEnemy,
            enemies.BasicEnemy],
 
@@ -90,10 +90,31 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
             enemies.FastEnemy,
             enemies.VariatingSpeedEnemy,
             enemies.SlowFatEnemy],
+
+           [enemies.VariatingSpeedEnemy,
+            enemies.VariatingSpeedEnemy,
+            enemies.VariatingSpeedEnemy,
+            enemies.VariatingSpeedEnemy,
+            enemies.VariatingSpeedEnemy,
+            enemies.VariatingSpeedEnemy,
+            enemies.VariatingSpeedEnemy,
+            enemies.VariatingSpeedEnemy,
+            enemies.VariatingSpeedEnemy,
+            enemies.VariatingSpeedEnemy],
         ];
 
+        // before we have a nice list of waves, we now just construct some more waves based on previously defined waves
+        var more_waves = Array();
+        for(var i=0; i < this.waves.length; i++) {
+            var new_wave = Array();
+            for(var j=0; j < i+1;j++) {
+                new_wave = new_wave.concat(this.waves[j]);
+            }
+            more_waves.push(new_wave);
+        }
+        this.waves = this.waves.concat(more_waves);
+
         this.spawnWave = function() {
-            this.nextWavePending = false;
 
             var self = this;
             var current_wave = this.waves[this.game_wave];
@@ -103,6 +124,8 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
             current_wave.forEach(function(enemy) {
                 setTimeout(function() {
                     self.spawnEnemy(enemy);
+
+                    self.nextWavePending = false;
                 }, enemyCounter * msBetweenEnemy);
                 enemyCounter++;
             });

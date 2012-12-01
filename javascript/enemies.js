@@ -80,9 +80,13 @@ var Enemy = exports.Enemy = function(playSurface) {
     return this;
 };
 
-// inherit (actually: set prototype)
 gamejs.utils.objects.extend(Enemy, gamejs.sprite.Sprite);
+
 Enemy.prototype.update = function(msDuration) {
+    if (this.customUpdate) {
+        this.customUpdate();
+    }
+
     if(this.destination_reached) {
         return;
     }
@@ -175,7 +179,7 @@ var BasicEnemy = exports.BasicEnemy = function(playSurface) {
 
     this.loadImage("images/enemy-blue.png");
 
-    this.setReward(100);
+    this.setReward(15);
     this.setHealth(1800);
     this.setSpeed(100);
 
@@ -188,7 +192,7 @@ var SlowFatEnemy = exports.SlowFatEnemy = function(playSurface) {
 
     this.loadImage("images/enemy-green.png");
 
-    this.setReward(50);
+    this.setReward(25);
     this.setHealth(3000);
     this.setSpeed(50);
 
@@ -202,7 +206,7 @@ var FastEnemy = exports.FastEnemy = function(playSurface) {
     this.loadImage("images/enemy.png");
 
     this.setReward(10);
-    this.setHealth(1800);
+    this.setHealth(1000);
     this.setSpeed(200);
     this.setRotateCorners(true);
 
@@ -216,12 +220,23 @@ var VariatingSpeedEnemy = exports.VariatingSpeedEnemy = function(playSurface) {
     this.loadImage("images/enemy-pink.png");
 
     this.setReward(15);
-    this.setHealth(500);
-    this.setSpeed(100);
+    this.setHealth(900);
+    this.baseSpeed = 50;
+    this.setSpeed(this.baseSpeed);
 
     return this;
 };
+
 gamejs.utils.objects.extend(VariatingSpeedEnemy, Enemy);
+
+VariatingSpeedEnemy.prototype.customUpdate = function(msDuration) {
+    var variationDuration = 150;
+    var variation = this.distance_traveled % variationDuration;
+    if (variation > variationDuration / 2) {
+        variation = variationDuration - variation;
+    }
+    this.setSpeed(this.baseSpeed + (variation));
+};
 
 var ExplosionParticle = function(playSurface, location) {
     ExplosionParticle.superConstructor.apply(this, arguments);
