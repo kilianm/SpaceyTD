@@ -17,10 +17,15 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
         this.pathThickness = 10;
 
         this.game_money = 200;
+        this.high_score = 0;
         this.game_lives = 10;
         this.game_wave = 0;
 
+        this.scoreAlreadyPublished = false;
+
         this.paused = false;
+
+        this.hudGameOver = false;
 
         var font = new gamejs.font.Font('20px monospace');
 
@@ -101,6 +106,281 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
             enemies.VariatingSpeedEnemy,
             enemies.VariatingSpeedEnemy,
             enemies.VariatingSpeedEnemy],
+
+            [enemies.VariatingSpeedEnemy,
+             enemies.VariatingSpeedEnemy,
+             enemies.VariatingSpeedEnemy,
+             enemies.VariatingSpeedEnemy,
+             enemies.VariatingSpeedEnemy,
+             enemies.VariatingSpeedEnemy,
+             enemies.VariatingSpeedEnemy,
+             enemies.VariatingSpeedEnemy,
+             enemies.VariatingSpeedEnemy,
+             enemies.VariatingSpeedEnemy,
+             enemies.VariatingSpeedEnemy,
+             enemies.VariatingSpeedEnemy,
+             enemies.VariatingSpeedEnemy],
+
+             [enemies.VariatingSpeedEnemy,
+              enemies.VariatingSpeedEnemy,
+              enemies.VariatingSpeedEnemy,
+              enemies.VariatingSpeedEnemy,
+              enemies.VariatingSpeedEnemy,
+              enemies.VariatingSpeedEnemy,
+              enemies.VariatingSpeedEnemy,
+              enemies.VariatingSpeedEnemy,
+              enemies.VariatingSpeedEnemy,
+              enemies.VariatingSpeedEnemy,
+              enemies.VariatingSpeedEnemy,
+              enemies.VariatingSpeedEnemy,
+              enemies.VariatingSpeedEnemy,
+              enemies.VariatingSpeedEnemy,
+              enemies.VariatingSpeedEnemy,
+              enemies.VariatingSpeedEnemy],
+
+              [enemies.VariatingSpeedEnemy,
+               enemies.VariatingSpeedEnemy,
+               enemies.VariatingSpeedEnemy,
+               enemies.VariatingSpeedEnemy,
+               enemies.VariatingSpeedEnemy,
+               enemies.VariatingSpeedEnemy,
+               enemies.VariatingSpeedEnemy,
+               enemies.VariatingSpeedEnemy,
+               enemies.VariatingSpeedEnemy,
+               enemies.VariatingSpeedEnemy,
+               enemies.VariatingSpeedEnemy,
+               enemies.VariatingSpeedEnemy,
+               enemies.VariatingSpeedEnemy,
+               enemies.VariatingSpeedEnemy,
+               enemies.VariatingSpeedEnemy,
+               enemies.VariatingSpeedEnemy,
+               enemies.VariatingSpeedEnemy,
+               enemies.VariatingSpeedEnemy,
+               enemies.VariatingSpeedEnemy],
+
+               [enemies.VariatingSpeedEnemy,
+                enemies.VariatingSpeedEnemy,
+                enemies.VariatingSpeedEnemy,
+                enemies.VariatingSpeedEnemy,
+                enemies.VariatingSpeedEnemy,
+                enemies.VariatingSpeedEnemy,
+                enemies.VariatingSpeedEnemy,
+                enemies.VariatingSpeedEnemy,
+                enemies.VariatingSpeedEnemy,
+                enemies.VariatingSpeedEnemy,
+                enemies.VariatingSpeedEnemy,
+                enemies.VariatingSpeedEnemy,
+                enemies.VariatingSpeedEnemy,
+                enemies.VariatingSpeedEnemy,
+                enemies.VariatingSpeedEnemy,
+                enemies.VariatingSpeedEnemy,
+                enemies.VariatingSpeedEnemy,
+                enemies.VariatingSpeedEnemy,
+                enemies.VariatingSpeedEnemy,
+                enemies.VariatingSpeedEnemy,
+                enemies.VariatingSpeedEnemy,
+                enemies.VariatingSpeedEnemy],
+
+                [enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy,
+                 enemies.VariatingSpeedEnemy],
+
+                 [enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy,
+                  enemies.VariatingSpeedEnemy],
+
+                  [enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy,
+                   enemies.VariatingSpeedEnemy],
+
+                   [enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy,
+                    enemies.VariatingSpeedEnemy],
+
+                    [enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy,
+                     enemies.VariatingSpeedEnemy],
+
+                     [enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy,
+                      enemies.VariatingSpeedEnemy],
         ];
 
         // before we have a nice list of waves, we now just construct some more waves based on previously defined waves
@@ -172,6 +452,11 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
         };
 
         this.update = function(msDuration) {
+            if (this.game_lives == 0) {
+                this.hudGameOver = true;
+                this.game_money = 0; //keep resetting.. (hack)
+            }
+
             this.gEnemies.update(msDuration);
             this.gTowers.update(msDuration);
             this.gProjectiles.update(msDuration);
@@ -179,6 +464,28 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
                 this.particles[i].update(msDuration);
             }
             this.gOverlay.update(msDuration);
+        };
+
+        this.onEnemyEscaped = function(event) {
+            if (this.game_lives > 0) {
+                this.game_lives--;
+            }
+            if (this.game_lives == 0) {
+                //update scores if the gameover api is loaded.
+                if (GameOver && this.scoreAlreadyPublished == false) {
+                    this.scoreAlreadyPublished = true;
+                    GameOver.init({
+                        appId      : '14' // App ID
+                    });
+                    GameOver.api("/me/score", "POST", {"score": this.high_score}, function(response) {
+                        if (response && response.errorCode == 0) {
+                            console.log('Score was published.');
+                        } else {
+                            console.log('Score was not published.');
+                        }
+                    });
+                }
+            }
         };
 
         this.drawHud = function(mainSurface) {
@@ -190,6 +497,11 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
 
             mainSurface.blit(gamejs.image.load("images/icon-wave.png"), [700, 70]);
             mainSurface.blit(font.render((this.game_wave + 1), '#fff'), [735, 75]);
+
+            if (this.hudGameOver) {
+                mainSurface.blit(font.render("GAME OVER", '#fff'), [300, 160]);
+                mainSurface.blit(font.render("Score: " + this.high_score, '#fff'), [300, 185]);
+            }
         };
 
         this.draw = function(mainSurface) {
@@ -201,7 +513,6 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
             mainSurface.blit(gamejs.image.load("images/mask.png"), [20, 20]);
             mainSurface.blit(gamejs.image.load("images/target.png"), [470, 560]);
 
-            this.drawHud(mainSurface);
             this.gEnemies.draw(mainSurface);
             this.gTowers.draw(mainSurface);
             this.gProjectiles.draw(mainSurface);
@@ -214,6 +525,8 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
             while(this.particles.length > this.maxParticles) {
                 this.particles.shift();
             }
+
+            this.drawHud(mainSurface);
         };
 
         this.handleMainEvents = function() {
@@ -223,8 +536,9 @@ var PlaySurface = exports.PlaySurface = function(rectSize, path) {
                 if(event.type === gamejs.event.USEREVENT) {
                     if(event.data.type == 'enemy-killed') {
                         self.game_money += event.data.reward;
+                        self.high_score += event.data.reward;
                     } else if(event.data.type == 'enemy-escaped') {
-                        self.game_lives--;
+                        self.onEnemyEscaped(event);
                     }
                 }
                 if (event.type === gamejs.event.MOUSE_MOTION) {
