@@ -1,10 +1,11 @@
 var gamejs = require('gamejs');
 var draw = require('gamejs/draw');
 
-var Enemy = exports.Enemy = function(playSurface) {
+var Enemy = exports.Enemy = function(playSurface, multiplier) {
     // call superconstructor
     Enemy.superConstructor.apply(this, arguments);
     this.playSurface = playSurface;
+    this.multiplier = multiplier;
 
     // config
     this.rotateCorners = false;
@@ -174,39 +175,39 @@ Enemy.prototype.draw = function(surface) {
 };
 
 
-var BasicEnemy = exports.BasicEnemy = function(playSurface) {
+var BasicEnemy = exports.BasicEnemy = function(playSurface, multiplier) {
     BasicEnemy.superConstructor.apply(this, arguments);
 
     this.loadImage("images/enemy-blue.png");
 
-    this.setReward(15);
-    this.setHealth(1800);
+    this.setReward(Math.floor(20*multiplier));
+    this.setHealth(Math.floor(1800*multiplier));
     this.setSpeed(100);
 
     return this;
 };
 gamejs.utils.objects.extend(BasicEnemy, Enemy);
 
-var SlowFatEnemy = exports.SlowFatEnemy = function(playSurface) {
+var SlowFatEnemy = exports.SlowFatEnemy = function(playSurface, multiplier) {
     SlowFatEnemy.superConstructor.apply(this, arguments);
 
     this.loadImage("images/enemy-green.png");
 
-    this.setReward(25);
-    this.setHealth(3000);
+    this.setReward(Math.floor(25*multiplier));
+    this.setHealth(Math.floor(3000*multiplier));
     this.setSpeed(50);
 
     return this;
 };
 gamejs.utils.objects.extend(SlowFatEnemy, Enemy);
 
-var FastEnemy = exports.FastEnemy = function(playSurface) {
+var FastEnemy = exports.FastEnemy = function(playSurface, multiplier) {
     FastEnemy.superConstructor.apply(this, arguments);
 
     this.loadImage("images/enemy.png");
 
-    this.setReward(10);
-    this.setHealth(1000);
+    this.setReward(Math.floor(15*multiplier));
+    this.setHealth(Math.floor(1000*multiplier));
     this.setSpeed(200);
     this.setRotateCorners(true);
 
@@ -214,13 +215,13 @@ var FastEnemy = exports.FastEnemy = function(playSurface) {
 };
 gamejs.utils.objects.extend(FastEnemy, Enemy);
 
-var VariatingSpeedEnemy = exports.VariatingSpeedEnemy = function(playSurface) {
+var VariatingSpeedEnemy = exports.VariatingSpeedEnemy = function(playSurface, multiplier) {
     VariatingSpeedEnemy.superConstructor.apply(this, arguments);
 
     this.loadImage("images/enemy-pink.png");
 
-    this.setReward(15);
-    this.setHealth(900);
+    this.setReward(Math.floor(15*multiplier));
+    this.setHealth(Math.floor(900*multiplier));
     this.baseSpeed = 50;
     this.setSpeed(this.baseSpeed);
 
